@@ -19,7 +19,7 @@ public class ShipHealthSystem : MonoBehaviour
     {
         if( collision.gameObject.CompareTag("Asteroid") ||
             collision.gameObject.CompareTag("Enemy") ) 
-        { 
+        {
             currentHealth -= 1;
             healthController.updateHealth();
         }
