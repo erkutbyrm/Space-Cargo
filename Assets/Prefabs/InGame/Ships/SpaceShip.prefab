@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3193026373690688712}
   m_Layer: 0
   m_Name: SpaceShip
-  m_TagString: Untagged
+  m_TagString: SpaceShip
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -180,6 +180,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d25ea225b10cb604a9a0467b954332ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigidBody: {fileID: 1863971829219324091}
-  health: 0
+  currentHealth: 5
   maxHealth: 5
+  healthController: {fileID: 6890595989458651126, guid: 984419fa934bbdf4a9e279294daac194, type: 3}

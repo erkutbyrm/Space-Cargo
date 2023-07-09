@@ -9,7 +9,6 @@ public class SpaceshipMovement : MonoBehaviour
     public float maxSpeed = 2f;
     public float accelPercentage = 2f;
     public float decelPercentage = 1f;
-    private Vector2 mousePosition;
     public Rigidbody2D rigidBody;
     Vector2 movement;
 
@@ -69,8 +68,6 @@ public class SpaceshipMovement : MonoBehaviour
             }
         }
 
-        
-        
         rigidBody.MovePosition(rigidBody.position + (Vector2)transform.right * currentSpeed * Time.fixedDeltaTime);
     }
 
