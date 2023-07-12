@@ -9,9 +9,14 @@ public class AsteroidCollisionSystem : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("SpaceShip"))
         { 
-            GameObject explosion = GameObject.Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-            Destroy(explosion, 1f);
-            gameObject.SetActive(false);
+            ExplodeAsteroid();
         }
+    }
+
+    public void ExplodeAsteroid()
+    {
+        GameObject explosion = GameObject.Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        Destroy(explosion, 1f);
+        gameObject.SetActive(false);
     }
 }
