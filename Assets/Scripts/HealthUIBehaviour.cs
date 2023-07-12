@@ -14,7 +14,7 @@ public class HealthUIBehaviour : MonoBehaviour
         playerShipHealthSystem = GameObject.FindObjectOfType<PlayerShipHealthBehavior>();
         GameObject barContainer =  this.gameObject.transform.GetChild(1).gameObject;
         
-        for(int i = 0; i < playerShipHealthSystem.maxHealth; i++)
+        for(int i = 0; i < playerShipHealthSystem.GetMaxHealth(); i++)
         {
             GameObject newBar = Instantiate(barPrefab);
             newBar.transform.SetParent(barContainer.transform);
@@ -31,7 +31,7 @@ public class HealthUIBehaviour : MonoBehaviour
     {
         for (int i = 0; i < barList.Count; i++)
         {
-            if (i < playerShipHealthSystem.currentHealth)
+            if (i < playerShipHealthSystem.GetCurrentHealth())
             {
                 barList[i].transform.GetChild(1).gameObject.SetActive(true);
             }

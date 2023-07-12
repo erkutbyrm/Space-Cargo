@@ -180,5 +180,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81a35a5aa236ee748b4a60fb4443f160, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHealth: 5
-  maxHealth: 5
+  explosionPrefab: {fileID: 5798926025909061627, guid: bbcb88311d2638143a0fad1981b3cd5c, type: 3}

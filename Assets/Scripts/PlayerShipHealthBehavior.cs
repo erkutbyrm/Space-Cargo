@@ -28,5 +28,10 @@ public class PlayerShipHealthBehavior : ShipHealthBehavior
         }
 
         healthUIBehaviour.updateHealth();
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
     }
 }

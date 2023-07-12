@@ -5,8 +5,9 @@ using UnityEngine.UI;
 
 public class ShipHealthBehavior : MonoBehaviour
 {
-    public int currentHealth = 5;
-    public int maxHealth = 5;
+    protected int currentHealth = 5;
+    protected int maxHealth = 5;
+    [SerializeField] private GameObject explosionPrefab;
    
 
     // Start is called before the first frame update
@@ -28,5 +29,23 @@ public class ShipHealthBehavior : MonoBehaviour
     protected void IncreaseHealth(int damage)
     {
         currentHealth += damage;
+    }
+
+    public int GetMaxHealth()
+    {
+        return maxHealth;
+    }
+
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+
+    protected void Die()
+    {
+        GameObject explosion = GameObject.Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        Destroy(gameObject);
+        Destroy(explosion, 1f);
+        
     }
 }
