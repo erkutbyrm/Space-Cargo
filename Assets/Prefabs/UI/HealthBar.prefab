@@ -156,7 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 181992cd1b7fb2043bcb8a5cd39c3f3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  barPrefab: {fileID: 2554751762531107989, guid: fec57a63f3648b34ebeca84c5f81c3f7, type: 3}
+  _barPrefab: {fileID: 2554751762531107989, guid: fec57a63f3648b34ebeca84c5f81c3f7, type: 3}
   barContainer: {fileID: 2848474101187663167}
 --- !u!114 &9211109618174689469
 MonoBehaviour:

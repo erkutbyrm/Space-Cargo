@@ -4,34 +4,17 @@ using UnityEngine;
 
 public class SpaceshipMovement : MonoBehaviour
 {
-    public float rotationSpeed = 5f;
-    public float currentSpeed = 0f;
-    public float maxSpeed = 2f;
-    public float accelPercentage = 2f;
-    public float decelPercentage = 1f;
-    public Rigidbody2D rigidBody;
-    Vector2 movement;
-
-    // Update is called once per frame
-    void Update()
-    {
-        //Vector3 mousePos = Input.mousePosition;
-        //Debug.Log("update mousepos: "+ mousePos);
-        movement.y = Input.GetAxisRaw("Vertical");
-        //mousePos = Camera.main.ScreenToWorldPoint(mousePos);
-
-        //Vector2 direction = new Vector2(
-        //    mousePos.x - transform.position.x,
-        //    mousePos.y - transform.position.y
-        //    );
-        //float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        //Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        //transform.rotation = Quaternion.Slerp(transform.rotation, rotation, rotationSpeed * Time.deltaTime);
-    }
-    
+    [SerializeField] private float _rotationSpeed = 5f;
+    [SerializeField] private float _currentSpeed = 0f;
+    [SerializeField] private float _maxSpeed = 20f;
+    [SerializeField] private float _accelPercentage = 2f;
+    [SerializeField] private float _decelPercentage = 1f;
+    [SerializeField] private Rigidbody2D _rigidBody;
+    private Vector2 _movement;
 
     private void FixedUpdate()
     {
+        _movement.y = Input.GetAxisRaw("Vertical");
         Vector3 mousePos = Input.mousePosition;
         mousePos = Camera.main.ScreenToWorldPoint(mousePos);
 
@@ -42,35 +25,31 @@ public class SpaceshipMovement : MonoBehaviour
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
         Quaternion rotation = Quaternion.AngleAxis(angle, transform.forward);
-        rigidBody.SetRotation( Quaternion.Slerp(transform.rotation, rotation, rotationSpeed * Time.fixedDeltaTime) );
-        //TODO: Apply physics, fix rotation on collision
+        _rigidBody.SetRotation(Quaternion.Slerp(transform.rotation, rotation, _rotationSpeed * Time.fixedDeltaTime));
 
-        if (movement.y > 0 && currentSpeed < maxSpeed)
+        if (_movement.y > 0 && _currentSpeed < _maxSpeed)
         {
-            currentSpeed += accelPercentage * Time.deltaTime;
+            _currentSpeed += _accelPercentage * Time.fixedDeltaTime;
         }
-        else if (movement.y < 0)
+        else if (_movement.y < 0)
         {
-            if (currentSpeed > 0)
+            if (_currentSpeed > 0)
             {
-                currentSpeed -= decelPercentage * Time.deltaTime;
+                _currentSpeed -= _decelPercentage * Time.fixedDeltaTime;
             }
             else
             {
-                currentSpeed = 0;
+                _currentSpeed = 0;
             }
         }
         else
         {
-            if (currentSpeed <= 0)
+            if (_currentSpeed <= 0)
             {
-                currentSpeed = 0;
+                _currentSpeed = 0;
             }
         }
 
-        rigidBody.MovePosition(rigidBody.position + (Vector2)transform.right * currentSpeed * Time.fixedDeltaTime);
+        _rigidBody.MovePosition(_rigidBody.position + (Vector2)transform.right * _currentSpeed * Time.fixedDeltaTime);
     }
-
-
-    
 }

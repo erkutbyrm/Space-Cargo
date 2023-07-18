@@ -4,36 +4,46 @@ using UnityEngine;
 
 public class LaserBehaviour : MonoBehaviour, IPooledObject
 {
-    public GameObject laserHitExplosionPrefab;
-    [SerializeField] private Rigidbody2D rigidBody;
-    [SerializeField] private float bulletVelocity = 20f;
+    [SerializeField] private GameObject _laserHitExplosionPrefab;
+    [SerializeField] private Rigidbody2D _rigidBody;
+    [SerializeField] private float _bulletVelocity = 20f;
+    private bool _isReturned = false;
 
-    // Start is called before the first frame update
-    public void onSpawFromPool()
+    public void OnSpawnFromPool()
     {
-        rigidBody.velocity = transform.right * bulletVelocity;
+        _isReturned = false;
+        _rigidBody.velocity = transform.right * _bulletVelocity;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform.CompareTag("Asteroid"))
         {
-            GameObject hitExplosion = Instantiate(laserHitExplosionPrefab, transform.position, transform.rotation);
+            GameObject hitExplosion = Instantiate(_laserHitExplosionPrefab, transform.position, transform.rotation);
             GameObject asteroid = collision.gameObject;
-            AsteroidCollisionSystem asteroidCollisionSystem = asteroid.GetComponent<AsteroidCollisionSystem>();
+            AsteroidBehaviour asteroidCollisionSystem = asteroid.GetComponent<AsteroidBehaviour>();
             asteroidCollisionSystem.ExplodeAsteroid();
-            Destroy(hitExplosion, 0.25f);
-            ReturnToQueue();
+            Animator animator = hitExplosion.GetComponent<Animator>();
+            float delay = animator.GetCurrentAnimatorStateInfo(0).length;
+            Destroy(hitExplosion, delay);
+            if(!_isReturned)
+            {
+                ReturnToQueue();
+            }
         }
     }
 
     private void OnBecameInvisible()
     {
-        ReturnToQueue();
+        if(!_isReturned)
+        {
+            ReturnToQueue();
+        }
     }
 
     private void ReturnToQueue()
     {
+        _isReturned = true;
         gameObject.SetActive(false);
         ObjectPooler.Instance.ReturnBackToQueue(Constants.TAG_LASER, gameObject);
     }

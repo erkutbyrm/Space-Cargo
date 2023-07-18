@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IPooledObject
 {
-    void onSpawFromPool();
+    public void OnSpawnFromPool();
 }

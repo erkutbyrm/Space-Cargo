@@ -161,6 +161,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6e7fd5181f6f9e41bad0010ef08ccc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  laserHitExplosionPrefab: {fileID: 1024017750441297710, guid: 0729fe0cce2acec449a437f5afb1d7a8, type: 3}
-  rigidBody: {fileID: 7009591827487115087}
-  bulletVelocity: 20
+  _laserHitExplosionPrefab: {fileID: 1024017750441297710, guid: 0729fe0cce2acec449a437f5afb1d7a8, type: 3}
+  _rigidBody: {fileID: 7009591827487115087}
+  _bulletVelocity: 20

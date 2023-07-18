@@ -5,15 +5,14 @@ using UnityEngine;
 
 public class PlayerShipWeaponBehaviour : MonoBehaviour
 {
-    [SerializeField] private Transform laserStartPoint;
-    [SerializeField] private GameObject laserPrefab;
+    [SerializeField] private Transform _laserStartPoint;
+    [SerializeField] private GameObject _laserPrefab;
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            ObjectPooler.Instance.SpawnObjectFromPool(Constants.TAG_LASER, laserStartPoint.position, laserStartPoint.rotation);
+            ObjectPooler.Instance.SpawnObjectFromPool(Constants.TAG_LASER, _laserStartPoint.position, _laserStartPoint.rotation);
         }
     }
 }

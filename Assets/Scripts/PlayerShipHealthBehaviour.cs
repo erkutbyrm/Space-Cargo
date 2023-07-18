@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class PlayerShipHealthBehavior : ShipHealthBehaviour
 {
-    private HealthUIBehaviour healthUIBehaviour;
-    // Start is called before the first frame update
+    private HealthUIBehaviour _healthUIBehaviour;
+
     void Start()
     {
-        healthUIBehaviour = GameObject.FindObjectOfType<HealthUIBehaviour>();
+        _healthUIBehaviour = GameObject.FindObjectOfType<HealthUIBehaviour>();
     }
 
     protected override void OnCollisionEnter2D(Collision2D collision)
     {
         base.OnCollisionEnter2D(collision);
 
-        if (collision.gameObject.CompareTag("Asteroid") ||
-            collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag(Constants.TAG_ASTEROID) ||
+            collision.gameObject.CompareTag(Constants.TAG_ENEMY))
         {
-            DecreaseHealth(1);
+            DecreaseHealth(Constants.DAMAGE_ASTEROID);
         }
 
-        healthUIBehaviour.UpdateHealth();
+        _healthUIBehaviour.UpdateHealth();
     }
 }

@@ -162,7 +162,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2728928556230246593}
   m_Layer: 5
-  m_Name: Bar
+  m_Name: BarShadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -310,7 +310,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5855466725158875790}
   m_Layer: 5
-  m_Name: FullBar
+  m_Name: BarFull
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

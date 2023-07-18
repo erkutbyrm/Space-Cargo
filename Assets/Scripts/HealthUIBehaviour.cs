@@ -4,20 +4,19 @@ using UnityEngine;
 
 public class HealthUIBehaviour : MonoBehaviour
 {
-    [SerializeField] private GameObject barPrefab;
-    private PlayerShipHealthBehavior playerShipHealthBehaviour;
-    List<GameObject> barList = new List<GameObject>();
+    [SerializeField] private GameObject _barPrefab;
     [SerializeField] private GameObject barContainer;
+    private PlayerShipHealthBehavior _playerShipHealthBehaviour;
+    private List<GameObject> _barList = new List<GameObject>();
 
-    // Start is called before the first frame update
     void Start()
     {
-        playerShipHealthBehaviour = GameObject.FindObjectOfType<PlayerShipHealthBehavior>();
+        _playerShipHealthBehaviour = GameObject.FindObjectOfType<PlayerShipHealthBehavior>();
         
-        for(int i = 0; i < playerShipHealthBehaviour.MAX_HEALTH; i++)
+        for(int i = 0; i < _playerShipHealthBehaviour.MaxHealth; i++)
         {
-            GameObject newBar = Instantiate(barPrefab, barContainer.transform);
-            barList.Add(newBar);
+            GameObject newBar = Instantiate(_barPrefab, barContainer.transform);
+            _barList.Add(newBar);
         }
     }
     
@@ -28,17 +27,16 @@ public class HealthUIBehaviour : MonoBehaviour
 
     private void DrawBars()
     {
-        for (int i = 0; i < barList.Count; i++)
+        for (int i = 0; i < _barList.Count; i++)
         {
-            if (i < playerShipHealthBehaviour.currentHealth)
+            if (i < _playerShipHealthBehaviour.CurrentHealth)
             {
-                barList[i].transform.GetChild(1).gameObject.SetActive(true);
+                _barList[i].transform.Find(Constants.TAG_BAR_FULL).gameObject.SetActive(true);
             }
             else
             {
-                barList[i].transform.GetChild(1).gameObject.SetActive(false);
+                _barList[i].transform.Find(Constants.TAG_BAR_FULL).gameObject.SetActive(false);
             }
-            
         }
     }
 }

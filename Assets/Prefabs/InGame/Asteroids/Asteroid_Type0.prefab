@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3826179584776034247}
   - component: {fileID: -5920739523569777268}
   m_Layer: 0
-  m_Name: Asteroid
+  m_Name: Asteroid_Type0
   m_TagString: Asteroid
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -183,4 +183,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dd5170426320c14894a7ecb5de80dbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionPrefab: {fileID: 5798926025909061627, guid: bbcb88311d2638143a0fad1981b3cd5c, type: 3}
+  _explosionPrefab: {fileID: 5798926025909061627, guid: bbcb88311d2638143a0fad1981b3cd5c, type: 3}

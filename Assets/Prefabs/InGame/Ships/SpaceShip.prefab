@@ -196,12 +196,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acc8154d8dbe9364d844e5befef1c063, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  currentSpeed: 0
-  maxSpeed: 20
-  accelPercentage: 2
-  decelPercentage: 1
-  rigidBody: {fileID: 1863971829219324091}
+  _rotationSpeed: 5
+  _currentSpeed: 0
+  _maxSpeed: 20
+  _accelPercentage: 2
+  _decelPercentage: 1
+  _rigidBody: {fileID: 1863971829219324091}
 --- !u!114 &6357900851289637924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,7 +214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9e6fa54b0cc6c34893ab534539b5e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionPrefab: {fileID: 5798926025909061627, guid: bbcb88311d2638143a0fad1981b3cd5c, type: 3}
+  _explosionPrefab: {fileID: 5798926025909061627, guid: bbcb88311d2638143a0fad1981b3cd5c, type: 3}
 --- !u!114 &3193026373690688712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,7 +227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81a35a5aa236ee748b4a60fb4443f160, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shipBehaviour: {fileID: 6357900851289637924}
+  _shipBehaviour: {fileID: 6357900851289637924}
 --- !u!114 &245749531921627585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,5 +240,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcd21f2fb6073ca44a69037aa3e19250, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  laserStartPoint: {fileID: 602989769790858156}
-  laserPrefab: {fileID: 9024083986852348032, guid: d629e761f444c774eb2c9cc95a8ebd6c, type: 3}
+  _laserStartPoint: {fileID: 602989769790858156}
+  _laserPrefab: {fileID: 9024083986852348032, guid: d629e761f444c774eb2c9cc95a8ebd6c, type: 3}

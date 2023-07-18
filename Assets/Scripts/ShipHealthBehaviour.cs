@@ -5,33 +5,28 @@ using UnityEngine.UI;
 
 public class ShipHealthBehaviour : MonoBehaviour
 {
-    public int currentHealth { get; protected set; } //pascalcase property
-    //public int currentHealth2 { get { return currentHealth2*2; } protected set { currentHealth2 = value; } }
-    public readonly int MAX_HEALTH = 5;
-    [SerializeField] protected ShipBehaviour shipBehaviour;
+    public int CurrentHealth { get; protected set; }
+    public int MaxHealth { get; protected set; } = 5;
+    [SerializeField] protected ShipBehaviour _shipBehaviour;
 
-    // Start is called before the first frame update
     void Awake()
     {
-        currentHealth = MAX_HEALTH;
+        CurrentHealth = MaxHealth;
     }
 
-    protected virtual void OnCollisionEnter2D(Collision2D collision)
-    {
-        //to be overriden
-    }
+    protected virtual void OnCollisionEnter2D(Collision2D collision) { }
 
     protected void DecreaseHealth(int damage)
     {
-        currentHealth -= damage;
-        if (currentHealth <= 0)
+        CurrentHealth -= damage;
+        if (CurrentHealth <= 0)
         {
-            shipBehaviour.Die();
+            _shipBehaviour.Die();
         }
     }
 
     protected void IncreaseHealth(int amount)
     {
-        currentHealth += amount;
+        CurrentHealth += amount;
     }
 }
