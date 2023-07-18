@@ -2,19 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerShipHealthBehavior : ShipHealthBehavior
+public class PlayerShipHealthBehavior : ShipHealthBehaviour
 {
     private HealthUIBehaviour healthUIBehaviour;
     // Start is called before the first frame update
     void Start()
     {
         healthUIBehaviour = GameObject.FindObjectOfType<HealthUIBehaviour>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     protected override void OnCollisionEnter2D(Collision2D collision)
@@ -27,11 +21,6 @@ public class PlayerShipHealthBehavior : ShipHealthBehavior
             DecreaseHealth(1);
         }
 
-        healthUIBehaviour.updateHealth();
-
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
+        healthUIBehaviour.UpdateHealth();
     }
 }

@@ -2,24 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AsteroidCollisionSystem : MonoBehaviour
+public class ShipBehaviour : MonoBehaviour
 {
-    //general asteroid class
-    //update tags
-    public GameObject explosionPrefab;
-    
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    [SerializeField] private GameObject explosionPrefab;
+    public void Die()
     {
-        if (collision.gameObject.CompareTag(Constants.TAG_SPACESHIP))
-        { 
-            ExplodeAsteroid();
-        }
-    }
-
-    public void ExplodeAsteroid()
-    {
-        
         GameObject explosion = GameObject.Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         Animator explosionAnimator = explosion.GetComponent<Animator>();
         float delay = explosionAnimator.GetCurrentAnimatorStateInfo(0).length;

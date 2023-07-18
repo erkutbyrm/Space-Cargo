@@ -157,6 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   barPrefab: {fileID: 2554751762531107989, guid: fec57a63f3648b34ebeca84c5f81c3f7, type: 3}
+  barContainer: {fileID: 2848474101187663167}
 --- !u!114 &9211109618174689469
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ public class PlayerShipWeaponBehaviour : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            Instantiate(laserPrefab, laserStartPoint.position, laserStartPoint.rotation);
+            ObjectPooler.Instance.SpawnObjectFromPool(Constants.TAG_LASER, laserStartPoint.position, laserStartPoint.rotation);
         }
     }
 }
