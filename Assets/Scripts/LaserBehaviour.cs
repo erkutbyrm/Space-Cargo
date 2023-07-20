@@ -8,6 +8,7 @@ public class LaserBehaviour : MonoBehaviour, IPooledObject
     [SerializeField] private Rigidbody2D _rigidBody;
     [SerializeField] private float _bulletVelocity = 20f;
     private bool _isReturned = false;
+    public GameObject GemPrefab;
 
     public void OnSpawnFromPool()
     {
@@ -17,19 +18,27 @@ public class LaserBehaviour : MonoBehaviour, IPooledObject
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.transform.CompareTag("Asteroid"))
+        
+        if (collision.transform.CompareTag(Constants.TAG_SPACESHIP))
         {
-            GameObject hitExplosion = Instantiate(_laserHitExplosionPrefab, transform.position, transform.rotation);
+            return;
+        }
+        Debug.Log(collision.name);
+        GameObject hitExplosion = Instantiate(_laserHitExplosionPrefab, transform.position, transform.rotation);
+        Animator animator = hitExplosion.GetComponent<Animator>();
+        float delay = animator.GetCurrentAnimatorStateInfo(0).length;
+        Destroy(hitExplosion, delay);
+
+        if (collision.transform.CompareTag(Constants.TAG_ASTEROID))
+        {
+            GameObject gem = Instantiate(GemPrefab, collision.transform.position, collision.transform.rotation);
             GameObject asteroid = collision.gameObject;
             AsteroidBehaviour asteroidCollisionSystem = asteroid.GetComponent<AsteroidBehaviour>();
             asteroidCollisionSystem.ExplodeAsteroid();
-            Animator animator = hitExplosion.GetComponent<Animator>();
-            float delay = animator.GetCurrentAnimatorStateInfo(0).length;
-            Destroy(hitExplosion, delay);
-            if(!_isReturned)
-            {
-                ReturnToQueue();
-            }
+        }
+        if (!_isReturned)
+        {
+            ReturnToQueue();
         }
     }
 

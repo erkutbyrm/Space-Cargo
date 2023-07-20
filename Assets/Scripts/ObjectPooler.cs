@@ -8,65 +8,96 @@ public class ObjectPooler : MonoBehaviour
     [System.Serializable]
     public class Pool
     {
+        public Queue<GameObject> PoolQueue;
         public string PoolTag;
         public GameObject ObjectPrefab;
-        public int Size = 10;
+        public int StartingSize = 5;
+        public int MaxSize = 20;
+        public int currentSize = 0;
         [SerializeField]
-        [Range(1, 50)]
-        private int _expandSize = 5;
-        public int ExpandSize {
+        [Range(1,5)]
+        private int _expandAmount = 1;
+        public int ExpandAmount {
             get
             {
-                if (_expandSize <= 0) { return 1; }
-                return _expandSize;
+                if (_expandAmount <= 0) { return 1; }
+                return _expandAmount;
             }
             set
             {
-                if (value <= 0) _expandSize = 1;
+                if (value <= 0)
+                {
+                    _expandAmount = 1;
+                }
+                else 
+                {
+                    _expandAmount = value;
+                }
             }
         }
     }
 
     public static ObjectPooler Instance;
-
+    
     private void Awake()
     {
-        Instance = this;
-    }
-
-    [SerializeField] private List<Pool> _pools;
-    private Dictionary<string, Queue<GameObject>> _poolDictionary;
-
-    void Start()
-    {
-        _poolDictionary = new Dictionary<string, Queue<GameObject>>();
-        foreach (Pool pool in _pools)
+        if(Instance == null)
         {
-            Queue<GameObject> newPoolQueue = new Queue<GameObject>();
-            for (int i = 0; i < pool.Size; i++)
-            {
-                GameObject instantiatedGameObject = GameObject.Instantiate(pool.ObjectPrefab, parent: this.transform);
-                instantiatedGameObject.SetActive(false);
-                newPoolQueue.Enqueue(instantiatedGameObject);
-            }
-            _poolDictionary.Add(pool.PoolTag, newPoolQueue);
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this.gameObject);
         }
     }
 
-    
+    [SerializeField] private List<Pool> _pools;
+    //TODO: move inside pool class
+    void Start()
+    {
+        foreach (Pool pool in _pools)
+        {
+            pool.PoolQueue = new Queue<GameObject>();
+            for (int i = 0; i < pool.StartingSize; i++)
+            {
+                GameObject instantiatedGameObject = GameObject.Instantiate(pool.ObjectPrefab, parent: this.transform);
+                instantiatedGameObject.SetActive(false);
+                pool.PoolQueue.Enqueue(instantiatedGameObject);
+            }
+            pool.currentSize = pool.StartingSize;
+        }
+    }
+
+
     public GameObject SpawnObjectFromPool(string tag, Vector2 position, Quaternion rotation)
     {
-        if (!_poolDictionary.ContainsKey(tag))
+        Pool currentPool;
+        if (_pools.Exists(pool => pool.PoolTag == tag))
+        {
+            currentPool = _pools.Find(pool => pool.PoolTag == tag);
+        }
+        else
         {
             Debug.LogWarning($"\"{tag}\" pool doesn't exists!");
             return null;
         }
-        while (_poolDictionary[tag].Count == 0)
+        var x = 0;
+        while (currentPool.PoolQueue.Count == 0)
         {
-            ExpandPoolWithTag(tag);
+            x++;
+            
+            if (!ExpandPoolWithTag(tag))
+            {
+                return null;
+            }
+            if (x >= 10)
+            {
+                Debug.Log("10");
+                break;
+            }
         }
 
-        GameObject objectToSpawn = _poolDictionary[tag].Dequeue();
+        GameObject objectToSpawn = currentPool.PoolQueue.Dequeue();
         objectToSpawn.transform.position = position;
         objectToSpawn.transform.rotation = rotation;
         objectToSpawn.SetActive(true);
@@ -77,18 +108,26 @@ public class ObjectPooler : MonoBehaviour
 
     public void ReturnBackToQueue(string tag, GameObject gameObject)
     {
-        _poolDictionary[tag].Enqueue(gameObject);
+        _pools.Find(pool=>pool.PoolTag == tag).PoolQueue.Enqueue(gameObject);
     }
 
-    private void ExpandPoolWithTag(string tag)
+    private bool ExpandPoolWithTag(string tag)
     {
+        
         Pool currentPool = _pools.Find(pool => pool.PoolTag == tag);
 
-        for (int i = 0; i < currentPool.ExpandSize; i++)
+        for (int i = 0; i < currentPool.ExpandAmount; i++)
         {
+            if (currentPool.currentSize >= currentPool.MaxSize)
+            {
+                Debug.LogWarning(tag + "Pool limit reached");
+                return false;
+            }
+            currentPool.currentSize++;
             GameObject instantiatedGameObject = GameObject.Instantiate(currentPool.ObjectPrefab, parent: this.transform);
             instantiatedGameObject.SetActive(false);
-            _poolDictionary[tag].Enqueue(instantiatedGameObject);
+            currentPool.PoolQueue.Enqueue(instantiatedGameObject);
         }
+        return true;
     }
 }

@@ -8,6 +8,7 @@ TagManager:
   - Asteroid
   - Enemy
   - Collectable
+  - SpaceStation
   layers:
   - Default
   - TransparentFX

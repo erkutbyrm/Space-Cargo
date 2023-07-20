@@ -31,11 +31,11 @@ public class HealthUIBehaviour : MonoBehaviour
         {
             if (i < _playerShipHealthBehaviour.CurrentHealth)
             {
-                _barList[i].transform.Find(Constants.TAG_BAR_FULL).gameObject.SetActive(true);
+                _barList[i].transform.Find(Constants.NAME_BAR_FULL).gameObject.SetActive(true);
             }
             else
             {
-                _barList[i].transform.Find(Constants.TAG_BAR_FULL).gameObject.SetActive(false);
+                _barList[i].transform.Find(Constants.NAME_BAR_FULL).gameObject.SetActive(false);
             }
         }
     }
