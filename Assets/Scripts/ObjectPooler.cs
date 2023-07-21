@@ -81,19 +81,13 @@ public class ObjectPooler : MonoBehaviour
             Debug.LogWarning($"\"{tag}\" pool doesn't exists!");
             return null;
         }
-        var x = 0;
         while (currentPool.PoolQueue.Count == 0)
         {
-            x++;
-            
+
             if (!ExpandPoolWithTag(tag))
             {
+                Debug.LogWarning("Cannot instantiate since pool limit reached.");
                 return null;
-            }
-            if (x >= 10)
-            {
-                Debug.Log("10");
-                break;
             }
         }
 

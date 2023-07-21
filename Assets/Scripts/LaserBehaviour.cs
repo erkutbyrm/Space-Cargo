@@ -23,7 +23,6 @@ public class LaserBehaviour : MonoBehaviour, IPooledObject
         {
             return;
         }
-        Debug.Log(collision.name);
         GameObject hitExplosion = Instantiate(_laserHitExplosionPrefab, transform.position, transform.rotation);
         Animator animator = hitExplosion.GetComponent<Animator>();
         float delay = animator.GetCurrentAnimatorStateInfo(0).length;
