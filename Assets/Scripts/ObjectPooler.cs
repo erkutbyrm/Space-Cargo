@@ -52,7 +52,6 @@ public class ObjectPooler : MonoBehaviour
     }
 
     [SerializeField] private List<Pool> _pools;
-    //TODO: move inside pool class
     void Start()
     {
         foreach (Pool pool in _pools)

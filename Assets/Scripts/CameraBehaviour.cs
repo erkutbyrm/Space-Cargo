@@ -6,9 +6,16 @@ public class CameraBehaviour : MonoBehaviour
 {
     private Vector3 _cameraOffset = new Vector3(0,0,-10f);
     [SerializeField] private GameObject _spaceShip;
-    // Update is called once per frame
+    [SerializeField] private GameObject _saturnBackground;
+
     void Update()
     {
+        _saturnBackground.transform.localPosition = new Vector3(
+            Mathf.Lerp(9f , -9f, (transform.position.x - 13f) / (87f-13f) ),
+            Mathf.Lerp(5f, -5f, (transform.position.y - 6f) / (93f - 6f)),
+            15f
+            );
+
         if (_spaceShip != null)
         {
             transform.position = new Vector3(
