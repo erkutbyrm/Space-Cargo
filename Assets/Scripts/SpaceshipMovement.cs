@@ -6,12 +6,12 @@ public class SpaceshipMovement : MonoBehaviour
 {
     [SerializeField] private float _rotationSpeed = 5f;
     [SerializeField] private float _currentSpeed = 0f;
-    [SerializeField] private float _maxSpeed = 20f;
+    [SerializeField] private float _maxSpeed = 10f;
     [SerializeField] private float _accelPercentage = 2f;
-    [SerializeField] private float _decelPercentage = 1f;
+    [SerializeField] private float _decelPercentage = 2f;
     [SerializeField] private Rigidbody2D _rigidBody;
     private Vector2 _movement;
-
+    
     private void FixedUpdate()
     {
         _movement.y = Input.GetAxisRaw("Vertical");

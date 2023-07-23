@@ -10,6 +10,7 @@ public static class Constants
     public const string TAG_LASER = "Laser";
     public const string TAG_ENEMY = "Enemy";
     public const string TAG_CARGO = "Cargo";
+    public const string TAG_COLLECTABLE = "Collectable";
     public const string NAME_BAR_SHADOW = "BarShadow";
     public const string NAME_BAR_FULL = "BarFull";
     public const string NAME_GEM_TEXT = "CollectedGemsText";

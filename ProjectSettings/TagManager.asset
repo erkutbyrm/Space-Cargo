@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Collectable
   - SpaceStation
+  - Laser
   layers:
   - Default
   - TransparentFX

@@ -19,7 +19,9 @@ public class LaserBehaviour : MonoBehaviour, IPooledObject
     private void OnTriggerEnter2D(Collider2D collision)
     {
         
-        if (collision.transform.CompareTag(Constants.TAG_SPACESHIP))
+        if (collision.transform.CompareTag(Constants.TAG_SPACESHIP) ||
+            collision.transform.CompareTag(Constants.TAG_LASER) ||
+            collision.transform.CompareTag(Constants.TAG_COLLECTABLE))
         {
             return;
         }
