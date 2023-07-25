@@ -16,7 +16,6 @@ public class AsteroidBehaviour : MonoBehaviour
 
     public void ExplodeAsteroid()
     {
-        
         GameObject explosion = GameObject.Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
         Animator explosionAnimator = explosion.GetComponent<Animator>();
         float delay = explosionAnimator.GetCurrentAnimatorStateInfo(0).length;

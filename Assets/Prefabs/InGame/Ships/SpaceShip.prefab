@@ -200,9 +200,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rotationSpeed: 5
   _currentSpeed: 0
-  _maxSpeed: 20
+  _maxSpeed: 5
   _accelPercentage: 2
-  _decelPercentage: 1
+  _decelPercentage: 2
   _rigidBody: {fileID: 1863971829219324091}
 --- !u!114 &6357900851289637924
 MonoBehaviour:

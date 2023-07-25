@@ -1,23 +1,33 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SpaceshipMovement : MonoBehaviour
 {
+    public static event Action<float> OnSpeedBoost;
+
     [SerializeField] private float _rotationSpeed = 5f;
     [SerializeField] private float _currentSpeed = 0f;
-    [SerializeField] private float _maxSpeed = 10f;
+    [SerializeField] private float _maxSpeed = 5f;
     [SerializeField] private float _accelPercentage = 2f;
     [SerializeField] private float _decelPercentage = 2f;
     [SerializeField] private Rigidbody2D _rigidBody;
     private Vector2 _movement;
-    
-    private void FixedUpdate()
+    private Vector3 mousePos;
+
+    private float _remainingBoostInSeconds = 0;
+    private bool _isBoostActive = false;
+
+    private void Update()
     {
         _movement.y = Input.GetAxisRaw("Vertical");
-        Vector3 mousePos = Input.mousePosition;
+        mousePos = Input.mousePosition;
         mousePos = Camera.main.ScreenToWorldPoint(mousePos);
+    }
 
+    private void FixedUpdate()
+    {
         Vector2 direction = new Vector2(
             mousePos.x - transform.position.x,
             mousePos.y - transform.position.y
@@ -51,5 +61,43 @@ public class SpaceshipMovement : MonoBehaviour
         }
 
         _rigidBody.MovePosition(_rigidBody.position + (Vector2)transform.right * _currentSpeed * Time.fixedDeltaTime);
+    }
+
+    private void OnEnable()
+    {
+        PowerUpSpeedBehaviour.OnPowerUpSpeedCollected += BoostSpeed;
+    }
+
+    private void OnDisable()
+    {
+        PowerUpSpeedBehaviour.OnPowerUpSpeedCollected -= BoostSpeed;
+    }
+
+    private void BoostSpeed(float speed, float duration)
+    {
+        OnSpeedBoost?.Invoke(duration);
+        if(_isBoostActive)
+        {
+            _remainingBoostInSeconds = duration;
+            return;
+        }
+        StartCoroutine( BoostSpeedCoroutine(speed,duration) );
+    }
+
+    
+    private IEnumerator BoostSpeedCoroutine(float speed, float duration)
+    {
+        _isBoostActive = true;
+        _remainingBoostInSeconds = duration;
+        float prevMaxSpeed = _maxSpeed;
+        _maxSpeed += speed;
+        _currentSpeed = _maxSpeed;
+        for(; _remainingBoostInSeconds > 0; _remainingBoostInSeconds--)
+        {
+            yield return new WaitForSeconds(1f);
+        }
+        _maxSpeed = prevMaxSpeed;
+        _currentSpeed = _maxSpeed;
+        _isBoostActive = false;
     }
 }

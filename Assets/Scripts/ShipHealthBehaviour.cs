@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ShipHealthBehaviour : MonoBehaviour
 {
+    [SerializeField]
     public int CurrentHealth { get; protected set; }
     public int MaxHealth { get; protected set; } = 5;
     [SerializeField] protected ShipBehaviour _shipBehaviour;
