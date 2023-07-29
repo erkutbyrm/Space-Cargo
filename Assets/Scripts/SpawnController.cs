@@ -10,9 +10,11 @@ public class SpawnController : MonoBehaviour
     [SerializeField] private int _asteroidSpawnCount = 0;
     [SerializeField] private int _cargoSpawnCount = 0;
     [SerializeField] private int _gemSpawnCount = 0;
-    [SerializeField] private int _minX, _maxX, _minY, _maxY;
     [SerializeField] private float _spawnSpaceInterval;
     private readonly Vector2 NOT_FOUND_VECTOR2 = new Vector2(-99f,-99f);
+
+    [SerializeField] private LevelController _levelController;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -88,8 +90,8 @@ public class SpawnController : MonoBehaviour
         int tryLimit = 20;
         do
         {
-            spawnPos.x = Random.Range(_minX, _maxX);
-            spawnPos.y = Random.Range(_minY, _maxY);
+            spawnPos.x = Random.Range(0, _levelController.mapLimits.x);
+            spawnPos.y = Random.Range(0, _levelController.mapLimits.y);
         } while (!isSpawnable(spawnPos) && --tryLimit > 0);
         if (isSpawnable(spawnPos))
         {

@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class SpaceStationBehaviour : MonoBehaviour
 {
-    [SerializeField] private CollectableDataController _collectableDataController;
-    public void GameEndCheck(GameObject spaceShip)
+    [SerializeField] private LevelController _levelController;
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        //if(_collectableDataController.CollectedCargoCount == )
+        if(collision.CompareTag(Constants.TAG_SPACESHIP))
+        {
+            _levelController.TryWin();
+        }
     }
 }

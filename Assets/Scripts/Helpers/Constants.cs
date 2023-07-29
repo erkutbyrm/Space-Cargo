@@ -16,5 +16,10 @@ public static class Constants
     public const string NAME_GEM_TEXT = "CollectedGemsText";
     public const string NAME_CARGO_TEXT = "CollectedCargosText";
 
+    public const string SCENE_MAIN_MENU = "MainMenuScene";
+    public const string SCENE_GAME = "GameScene";
+
+    public const string PREFS_KEY_CURRENT_QUEST = "CurrentQuest";
+
     public const int DAMAGE_ASTEROID = 1;
 }

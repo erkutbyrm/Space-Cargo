@@ -5,7 +5,16 @@ using UnityEngine;
 public class AsteroidBehaviour : MonoBehaviour
 {
     [SerializeField] private GameObject _explosionPrefab;
-    
+    [SerializeField] private GameObject _gemPrefab;
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.transform.CompareTag(Constants.TAG_LASER))
+        {
+            GameObject gem = Instantiate(_gemPrefab, transform.position, transform.rotation);
+            ExplodeAsteroid();
+        }
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag(Constants.TAG_SPACESHIP))

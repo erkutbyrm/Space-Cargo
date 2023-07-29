@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class PlayerShipWeaponBehaviour : MonoBehaviour
@@ -10,7 +9,7 @@ public class PlayerShipWeaponBehaviour : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (LevelController.IsPaused == false && Input.GetKeyDown(KeyCode.Mouse0))
         {
             ObjectPooler.Instance.SpawnObjectFromPool(Constants.TAG_LASER, _laserStartPoint.position, _laserStartPoint.rotation);
         }

@@ -25,7 +25,7 @@ public class GameUIController : MonoBehaviour
     void Start()
     {
         _playerShipHealthBehaviour = GameObject.FindObjectOfType<PlayerShipHealthBehavior>();
-
+        //UpdateCargoCounterText(CargoQuest.CollectedCargoCount, CargoQuest.TargetCargoCount);
 
         for (int i = 0; i < _playerShipHealthBehaviour.MaxHealth; i++)
         {
@@ -37,7 +37,7 @@ public class GameUIController : MonoBehaviour
     private void OnEnable()
     {
         CollectableDataController.OnGemCountIncrease += UpdateGemCounterText;
-        CollectableDataController.OnCargoCountIncrease += UpdateCargoCounterText;
+        CargoQuest.OnCargoIncreased += UpdateCargoCounterText;
 
         SpaceshipMovement.OnSpeedBoost += UpdateSpeedPowerUp;
     }
@@ -45,7 +45,7 @@ public class GameUIController : MonoBehaviour
     private void OnDisable()
     {
         CollectableDataController.OnGemCountIncrease -= UpdateGemCounterText;
-        CollectableDataController.OnCargoCountIncrease -= UpdateCargoCounterText;
+        CargoQuest.OnCargoIncreased -= UpdateCargoCounterText;
 
         SpaceshipMovement.OnSpeedBoost -= UpdateSpeedPowerUp;
     }
@@ -80,9 +80,9 @@ public class GameUIController : MonoBehaviour
         _textGemsCount.text = "Gems: " + count.ToString();
     }
 
-    private void UpdateCargoCounterText(int count)
+    public void UpdateCargoCounterText(int count, int target)
     {
-        _textCargosCount.text = "Cargos: " + count.ToString();
+        _textCargosCount.text = "Cargos: " + count + " / " + target;
     }
 
     // POWER UPS

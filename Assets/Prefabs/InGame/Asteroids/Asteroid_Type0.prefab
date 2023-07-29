@@ -184,3 +184,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _explosionPrefab: {fileID: 5798926025909061627, guid: bbcb88311d2638143a0fad1981b3cd5c, type: 3}
+  _gemPrefab: {fileID: 8056124503389127422, guid: ef0674203e371ce4e99b5e2fea3bad9a, type: 3}

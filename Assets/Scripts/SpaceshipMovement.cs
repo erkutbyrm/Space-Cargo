@@ -13,6 +13,7 @@ public class SpaceshipMovement : MonoBehaviour
     [SerializeField] private float _accelPercentage = 2f;
     [SerializeField] private float _decelPercentage = 2f;
     [SerializeField] private Rigidbody2D _rigidBody;
+    [SerializeField] private Animator _animator;
     private Vector2 _movement;
     private Vector3 mousePos;
 
@@ -39,10 +40,12 @@ public class SpaceshipMovement : MonoBehaviour
 
         if (_movement.y > 0 && _currentSpeed < _maxSpeed)
         {
+            _animator.SetBool("IsThrustStarted", true);
             _currentSpeed += _accelPercentage * Time.fixedDeltaTime;
         }
         else if (_movement.y < 0)
         {
+            _animator.SetBool("IsThrustStarted", false);
             if (_currentSpeed > 0)
             {
                 _currentSpeed -= _decelPercentage * Time.fixedDeltaTime;
@@ -54,12 +57,13 @@ public class SpaceshipMovement : MonoBehaviour
         }
         else
         {
+            _animator.SetBool("IsThrustStarted", false);
             if (_currentSpeed <= 0)
             {
                 _currentSpeed = 0;
             }
         }
-
+        
         _rigidBody.MovePosition(_rigidBody.position + (Vector2)transform.right * _currentSpeed * Time.fixedDeltaTime);
     }
 
@@ -97,7 +101,10 @@ public class SpaceshipMovement : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
         _maxSpeed = prevMaxSpeed;
-        _currentSpeed = _maxSpeed;
+        if(_currentSpeed  >= _maxSpeed)
+        {
+            _currentSpeed = _maxSpeed;
+        }
         _isBoostActive = false;
     }
 }
