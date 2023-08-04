@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class SpaceStationBehaviour : MonoBehaviour
 {
-    [SerializeField] private LevelController _levelController;
+    private LevelController _levelController;
+    private void Start()
+    {
+        _levelController = GameObject.FindAnyObjectByType<LevelController>();
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag(Constants.TAG_SPACESHIP))

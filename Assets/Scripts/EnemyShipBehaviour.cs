@@ -4,37 +4,41 @@ using UnityEngine;
 
 public class EnemyShipBehaviour : ShipBehaviour
 {
-    [SerializeField] private int _triggerLength = 8;
+    public override int MaxHealth { get; protected set; } = 3;
+    public override int CollisionDamage { get; protected set; } = 1;
+
+    [SerializeField] private int _triggerLength = 9;
     private CapsuleCollider2D _capsuleCollider;
     private Rigidbody2D _rigidBody;
     private EnemyAI _enemyAI;
     private float _distanceFromShip;
-    [SerializeField] private int _currentHealth = 3;
-    [SerializeField] private int _maxHealth = 3;
 
     [SerializeField] private GameObject _laserPrefab;
-    [SerializeField] private GameObject _explosionPrefab;
     [SerializeField] private GameObject _gemPrefab;
+    [SerializeField] private Transform _laserStartPoint;
 
-     private GameObject _targetSpaceShip;
+    private GameObject _targetSpaceShip;
 
     //private Coroutine _aiCoroutine;
     private Coroutine _aiMoveCoroutine;
     private Coroutine _shootRepeatedly;
 
-    private bool _isCoroutinesStarted;
+    private bool _isAICoroutinesStarted;
+
+
     // Start is called before the first frame update
-    void Start()
+    public override void Start()
     {
+        CurrentHealth = MaxHealth;
         _targetSpaceShip = GameObject.FindGameObjectWithTag(Constants.TAG_SPACESHIP);
-        _currentHealth = _maxHealth;
         _distanceFromShip = 0;
-        _isCoroutinesStarted = false;
+        _isAICoroutinesStarted = false;
         _capsuleCollider = GetComponent<CapsuleCollider2D>();
         _rigidBody = GetComponent<Rigidbody2D>();
         _enemyAI = GetComponent<EnemyAI>();
+        _enemyAI.Initialize(_rigidBody, _targetSpaceShip);
     }
-
+    
     // Update is called once per frame
     void Update()
     {
@@ -49,70 +53,28 @@ public class EnemyShipBehaviour : ShipBehaviour
         if( _distanceFromShip <= _triggerLength)
         {
             FaceToSpaceShip(_targetSpaceShip);
-            if ( !_isCoroutinesStarted )
+            if ( !_isAICoroutinesStarted )
             {
+                _enemyAI.UpdatePath();
                 //_aiCoroutine = StartCoroutine("AICoroutine");
-                _aiMoveCoroutine = StartCoroutine("AIMoveCoroutine");
-                _shootRepeatedly = StartCoroutine("ShootRepeatedly");
-                _isCoroutinesStarted = true;
+                _aiMoveCoroutine = StartCoroutine( AIMoveCoroutine() );
+                _shootRepeatedly = StartCoroutine( ShootRepeatedly() );
+                _isAICoroutinesStarted = true;
             }
         }
         else
         {
-            if( _isCoroutinesStarted )
+            if( _isAICoroutinesStarted )
             {
                 //StopCoroutine(_aiCoroutine);
                 StopCoroutine(_aiMoveCoroutine);
                 StopCoroutine(_shootRepeatedly);
                 //_aiCoroutine = null;
-                _isCoroutinesStarted = false;
+                _isAICoroutinesStarted = false;
             }
             
         }
     }
-
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    if (collision.CompareTag(Constants.TAG_SPACESHIP))
-    //    {
-    //        _aiCoroutine = StartCoroutine("AICoroutine");
-    //        _aiMoveCoroutine = StartCoroutine("AIMoveCoroutine");
-    //        _shootRepeatedly = StartCoroutine("ShootRepeatedly");
-    //    }
-    //}
-
-
-    //private void OnTriggerStay2D(Collider2D collision)
-    //{
-    //    if (collision.CompareTag(Constants.TAG_SPACESHIP))
-    //    {
-    //        GameObject spaceShip = collision.gameObject;
-    //        FaceToSpaceShip(spaceShip);
-    //    }
-    //}
-
-    //private void OnTriggerExit2D(Collider2D collision)
-    //{
-    //    if (collision.CompareTag(Constants.TAG_SPACESHIP))
-    //    {
-    //        StopCoroutine(_aiCoroutine);
-    //        StopCoroutine(_aiMoveCoroutine);
-    //        StopCoroutine(_shootRepeatedly);
-    //        _aiCoroutine = null;
-    //    }
-    //}
-
-
-    //private IEnumerator AICoroutine()
-    //{
-    //    //while (true)
-    //    //{
-    //    //    Debug.Log("ST");
-    //    //    _enemyAI.UpdatePath();
-    //    //    yield return new WaitForSeconds(0.5f);
-    //    //}
-    //    yield return new WaitForSeconds(1);
-    //}
 
     private IEnumerator AIMoveCoroutine()
     {
@@ -122,20 +84,13 @@ public class EnemyShipBehaviour : ShipBehaviour
             yield return new WaitForSeconds(0.1f);
         }
     }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.gameObject.CompareTag(Constants.TAG_SPACESHIP) ||
-            collision.gameObject.CompareTag(Constants.TAG_ASTEROID))
-        {
-            TakeDamage(1);
-        }
-    }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected override void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag(Constants.TAG_LASER))
+        base.OnCollisionEnter2D(collision);
+        if (collision.gameObject.CompareTag(Constants.TAG_SPACESHIP))
         {
-            TakeDamage(1);
+            collision.gameObject.GetComponent<PlayerShipBehaviour>().TakeDamage(CollisionDamage);
         }
     }
 
@@ -150,22 +105,13 @@ public class EnemyShipBehaviour : ShipBehaviour
     {
         while (true)
         {
-            GameObject.Instantiate(_laserPrefab, transform.position, transform.rotation);
+            ObjectPooler.Instance.SpawnObjectFromPool(Constants.TAG_ENEMY_LASER, _laserStartPoint.position, _laserStartPoint.rotation);
             yield return new WaitForSeconds(1f);
         }
         
     }
 
     //Health
-
-    private void TakeDamage(int damage)
-    {
-        _currentHealth -= damage;
-        if(_currentHealth <= 0)
-        {
-            Die();
-        }
-    }
 
     public override void Die()
     {

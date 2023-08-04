@@ -9,7 +9,7 @@ TagManager:
   - Enemy
   - Collectable
   - SpaceStation
-  - Laser
+  - PlayerLaser
   - EnemyLaser
   layers:
   - Default

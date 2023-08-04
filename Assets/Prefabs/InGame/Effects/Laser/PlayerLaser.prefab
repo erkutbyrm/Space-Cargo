@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 5212818698626456273}
   - component: {fileID: 7009591827487115087}
   - component: {fileID: 8725887018468687659}
-  - component: {fileID: 4866366933217599691}
+  - component: {fileID: -2498921718861063249}
   m_Layer: 0
-  m_Name: Laser
-  m_TagString: Laser
+  m_Name: PlayerLaser
+  m_TagString: PlayerLaser
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -149,7 +149,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.54, y: 0.09}
   m_Direction: 1
---- !u!114 &4866366933217599691
+--- !u!114 &-2498921718861063249
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,10 +158,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 9024083986852348032}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6e7fd5181f6f9e41bad0010ef08ccc9, type: 3}
+  m_Script: {fileID: 11500000, guid: 3b701fa52426beb4796edb14c77b4dff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _laserHitExplosionPrefab: {fileID: 1024017750441297710, guid: 0729fe0cce2acec449a437f5afb1d7a8, type: 3}
   _rigidBody: {fileID: 7009591827487115087}
-  _bulletVelocity: 20
-  GemPrefab: {fileID: 8056124503389127422, guid: ef0674203e371ce4e99b5e2fea3bad9a, type: 3}

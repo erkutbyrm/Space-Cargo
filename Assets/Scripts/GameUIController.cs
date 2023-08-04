@@ -9,7 +9,7 @@ public class GameUIController : MonoBehaviour
     [Header("Health Bar")]
     [SerializeField] private GameObject _barPrefab;
     [SerializeField] private GameObject barContainer;
-    private PlayerShipHealthBehavior _playerShipHealthBehaviour;
+    private PlayerShipBehaviour _playerShipBehaviour;
     private List<GameObject> _barList = new List<GameObject>();
 
     [Header("Collectable Text")]
@@ -24,10 +24,10 @@ public class GameUIController : MonoBehaviour
 
     void Start()
     {
-        _playerShipHealthBehaviour = GameObject.FindObjectOfType<PlayerShipHealthBehavior>();
+        _playerShipBehaviour = GameObject.FindObjectOfType<PlayerShipBehaviour>();
         //UpdateCargoCounterText(CargoQuest.CollectedCargoCount, CargoQuest.TargetCargoCount);
 
-        for (int i = 0; i < _playerShipHealthBehaviour.MaxHealth; i++)
+        for (int i = 0; i < _playerShipBehaviour.MaxHealth; i++)
         {
             GameObject newBar = Instantiate(_barPrefab, barContainer.transform);
             _barList.Add(newBar);
@@ -39,7 +39,7 @@ public class GameUIController : MonoBehaviour
         CollectableDataController.OnGemCountIncrease += UpdateGemCounterText;
         CargoQuest.OnCargoIncreased += UpdateCargoCounterText;
 
-        SpaceshipMovement.OnSpeedBoost += UpdateSpeedPowerUp;
+        PlayerShipBehaviour.OnSpeedBoost += UpdateSpeedPowerUp;
     }
 
     private void OnDisable()
@@ -47,7 +47,7 @@ public class GameUIController : MonoBehaviour
         CollectableDataController.OnGemCountIncrease -= UpdateGemCounterText;
         CargoQuest.OnCargoIncreased -= UpdateCargoCounterText;
 
-        SpaceshipMovement.OnSpeedBoost -= UpdateSpeedPowerUp;
+        PlayerShipBehaviour.OnSpeedBoost -= UpdateSpeedPowerUp;
     }
 
     //HEALTH BAR
@@ -61,7 +61,7 @@ public class GameUIController : MonoBehaviour
     {
         for (int i = 0; i < _barList.Count; i++)
         {
-            if (i < _playerShipHealthBehaviour.CurrentHealth)
+            if (i < _playerShipBehaviour.CurrentHealth)
             {
                 _barList[i].transform.Find(Constants.NAME_BAR_FULL).gameObject.SetActive(true);
             }

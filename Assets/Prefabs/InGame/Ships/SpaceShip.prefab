@@ -149,11 +149,7 @@ GameObject:
   - component: {fileID: 6016626001479933979}
   - component: {fileID: 1863971829219324091}
   - component: {fileID: 1100767712447644308}
-  - component: {fileID: 9062646595016212173}
-  - component: {fileID: 6357900851289637924}
-  - component: {fileID: 3193026373690688712}
-  - component: {fileID: 245749531921627585}
-  - component: {fileID: -4622552357784942707}
+  - component: {fileID: 2969462936872818546}
   m_Layer: 0
   m_Name: SpaceShip
   m_TagString: SpaceShip
@@ -292,7 +288,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 0.94}
   m_Direction: 0
---- !u!114 &9062646595016212173
+--- !u!114 &2969462936872818546
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -301,9 +297,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8319358148133150233}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acc8154d8dbe9364d844e5befef1c063, type: 3}
+  m_Script: {fileID: 11500000, guid: a0d12a276998a8f4d8dfd0fc4a3127e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _explosionPrefab: {fileID: 5798926025909061627, guid: bbcb88311d2638143a0fad1981b3cd5c, type: 3}
   _rotationSpeed: 5
   _currentSpeed: 0
   _maxSpeed: 5
@@ -311,55 +308,5 @@ MonoBehaviour:
   _decelPercentage: 2
   _rigidBody: {fileID: 1863971829219324091}
   _animator: {fileID: 3348531933997771505}
---- !u!114 &6357900851289637924
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8319358148133150233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9e6fa54b0cc6c34893ab534539b5e5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _explosionPrefab: {fileID: 5798926025909061627, guid: bbcb88311d2638143a0fad1981b3cd5c, type: 3}
---- !u!114 &3193026373690688712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8319358148133150233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81a35a5aa236ee748b4a60fb4443f160, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _shipBehaviour: {fileID: 6357900851289637924}
---- !u!114 &245749531921627585
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8319358148133150233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bcd21f2fb6073ca44a69037aa3e19250, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   _laserStartPoint: {fileID: 602989769790858156}
   _laserPrefab: {fileID: 9024083986852348032, guid: d629e761f444c774eb2c9cc95a8ebd6c, type: 3}
---- !u!114 &-4622552357784942707
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8319358148133150233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df1aa75e6c2950e41a58d7a2b30f6573, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

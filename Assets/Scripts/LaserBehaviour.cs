@@ -6,31 +6,23 @@ public class LaserBehaviour : MonoBehaviour, IPooledObject
 {
     [SerializeField] private GameObject _laserHitExplosionPrefab;
     [SerializeField] private Rigidbody2D _rigidBody;
-    [SerializeField] private float _bulletVelocity = 20f;
+    public virtual float BulletVelocity { get; set; } = 20f;
+    public virtual int LaserDamage { get; set; } = 1;
     private bool _isReturned = false;
    
 
     public void OnSpawnFromPool()
     {
         _isReturned = false;
-        _rigidBody.velocity = transform.right * _bulletVelocity;
+        _rigidBody.velocity = transform.right * BulletVelocity;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        
-        if (! (collision.transform.CompareTag(Constants.TAG_ASTEROID) ||
-            collision.transform.CompareTag(Constants.TAG_ENEMY) ||
-            collision.transform.CompareTag(Constants.TAG_SPACESTATION)) 
-            )
-        {
-            return;
-        }
         GameObject hitExplosion = Instantiate(_laserHitExplosionPrefab, transform.position, transform.rotation);
         Animator animator = hitExplosion.GetComponent<Animator>();
         float delay = animator.GetCurrentAnimatorStateInfo(0).length;
         Destroy(hitExplosion, delay);
-
         
         if (!_isReturned)
         {
@@ -50,6 +42,6 @@ public class LaserBehaviour : MonoBehaviour, IPooledObject
     {
         _isReturned = true;
         gameObject.SetActive(false);
-        ObjectPooler.Instance.ReturnBackToQueue(Constants.TAG_LASER, gameObject);
+        ObjectPooler.Instance.ReturnBackToQueue(transform.tag, gameObject);
     }
 }

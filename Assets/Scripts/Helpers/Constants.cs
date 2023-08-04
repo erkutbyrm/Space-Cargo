@@ -7,11 +7,11 @@ public static class Constants
     public const string TAG_SPACESHIP = "SpaceShip";
     public const string TAG_SPACESTATION = "SpaceStation";
     public const string TAG_ASTEROID = "Asteroid";
-    public const string TAG_LASER = "Laser";
+    public const string TAG_PLAYER_LASER = "PlayerLaser";
+    public const string TAG_ENEMY_LASER = "EnemyLaser";
     public const string TAG_ENEMY = "Enemy";
     public const string TAG_CARGO = "Cargo";
     public const string TAG_COLLECTABLE = "Collectable";
-    public const string TAG_ENEMYLASER = "EnemyLaser";
 
     public const string NAME_BAR_SHADOW = "BarShadow";
     public const string NAME_BAR_FULL = "BarFull";
@@ -24,5 +24,4 @@ public static class Constants
     public const string PREFS_KEY_CURRENT_QUEST = "CurrentQuest";
     public const string PREFS_KEY_GEM_COUNT = "GemCount";
 
-    public const int DAMAGE_ASTEROID = 1;
 }
