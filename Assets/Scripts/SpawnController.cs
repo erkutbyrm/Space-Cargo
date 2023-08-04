@@ -7,9 +7,15 @@ public class SpawnController : MonoBehaviour
     [SerializeField] private GameObject[] _asteroidPrefabs;
     [SerializeField] private GameObject _gemPrefab;
     [SerializeField] private GameObject _cargoPrefab;
+    [SerializeField] private GameObject _enemyPrefab;
+    [SerializeField] private GameObject _speedBoostPrefab;
+
     [SerializeField] private int _asteroidSpawnCount = 0;
-    [SerializeField] private int _cargoSpawnCount = 0;
     [SerializeField] private int _gemSpawnCount = 0;
+    [SerializeField] private int _cargoSpawnCount = 0;
+    [SerializeField] private int _enemySpawnCount = 0;
+    [SerializeField] private int _speedBoostSpawnCount = 0;
+
     [SerializeField] private float _spawnSpaceInterval;
     private readonly Vector2 NOT_FOUND_VECTOR2 = new Vector2(-99f,-99f);
 
@@ -18,7 +24,7 @@ public class SpawnController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        while (_asteroidSpawnCount > 0 || _cargoSpawnCount > 0 || _gemSpawnCount > 0)
+        while (_asteroidSpawnCount > 0 || _cargoSpawnCount > 0 || _gemSpawnCount > 0 || _enemySpawnCount > 0 || _speedBoostSpawnCount > 0)
         {
             if(_cargoSpawnCount > 0)
             {
@@ -36,6 +42,18 @@ public class SpawnController : MonoBehaviour
             {
                 SpawnGem();
                 _gemSpawnCount--;
+            }
+
+            if(_enemySpawnCount > 0)
+            {
+                SpawnEnemy();
+                _enemySpawnCount--;
+            }
+
+            if(_speedBoostSpawnCount > 0)
+            {
+                SpawnSpeedBoost();
+                _speedBoostSpawnCount--;
             }
         }
     }
@@ -72,6 +90,28 @@ public class SpawnController : MonoBehaviour
         }
 
         GameObject.Instantiate(_gemPrefab, spawnPos, Quaternion.identity, transform);
+    }
+
+    private void SpawnEnemy()
+    {
+        Vector2 spawnPos = FindSpawnPosition();
+        if (spawnPos == NOT_FOUND_VECTOR2)
+        {
+            return;
+        }
+
+        GameObject.Instantiate(_enemyPrefab, spawnPos, Quaternion.identity, transform);
+    }
+
+    private void SpawnSpeedBoost()
+    {
+        Vector2 spawnPos = FindSpawnPosition();
+        if (spawnPos == NOT_FOUND_VECTOR2)
+        {
+            return;
+        }
+
+        GameObject.Instantiate(_speedBoostPrefab, spawnPos, Quaternion.identity, transform);
     }
 
     private bool isSpawnable(Vector2 expectedSpawnPosition)

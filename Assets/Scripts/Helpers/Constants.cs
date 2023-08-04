@@ -11,6 +11,8 @@ public static class Constants
     public const string TAG_ENEMY = "Enemy";
     public const string TAG_CARGO = "Cargo";
     public const string TAG_COLLECTABLE = "Collectable";
+    public const string TAG_ENEMYLASER = "EnemyLaser";
+
     public const string NAME_BAR_SHADOW = "BarShadow";
     public const string NAME_BAR_FULL = "BarFull";
     public const string NAME_GEM_TEXT = "CollectedGemsText";
@@ -20,6 +22,7 @@ public static class Constants
     public const string SCENE_GAME = "GameScene";
 
     public const string PREFS_KEY_CURRENT_QUEST = "CurrentQuest";
+    public const string PREFS_KEY_GEM_COUNT = "GemCount";
 
     public const int DAMAGE_ASTEROID = 1;
 }

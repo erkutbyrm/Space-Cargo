@@ -34,9 +34,15 @@ public class PlayerShipHealthBehavior : ShipHealthBehaviour
         if (collision.gameObject.CompareTag(Constants.TAG_ASTEROID) ||
             collision.gameObject.CompareTag(Constants.TAG_ENEMY))
         {
-            DecreaseHealth(Constants.DAMAGE_ASTEROID);
+            DecreaseHealth(1);
         }
 
+        _gameUIController.UpdateHealth();
+    }
+
+    public void TakeDamage(int damage)
+    {
+        DecreaseHealth(damage);
         _gameUIController.UpdateHealth();
     }
 

@@ -13,6 +13,7 @@ public class LevelController : MonoBehaviour
     [SerializeField] private GameObject _pauseMenu;
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private GameObject _winScreenPanel;
+    [SerializeField] private CollectableDataController _collectableDataController;
 
     public static bool IsPaused { get; protected set; }
     private bool _isWon;
@@ -84,7 +85,7 @@ public class LevelController : MonoBehaviour
 
     private Quest GenerateCargoQuest()
     {
-        return new CargoQuest(1);
+        return new CargoQuest(3);
     }
 
     private void OnDestroy()
@@ -116,6 +117,8 @@ public class LevelController : MonoBehaviour
 
     public void DisplayEndGame()
     {
+        Time.timeScale = 0f;
+        IsPaused = true;
         _gameOverPanel.SetActive(true);
     }
 
@@ -131,6 +134,7 @@ public class LevelController : MonoBehaviour
 
    public void TryWin()
     {
+        Debug.Log("gemco"+PlayerPrefs.GetInt(Constants.PREFS_KEY_GEM_COUNT));
         if (currentQuest.CheckCompleted())
         {
             _isWon = true;
@@ -138,6 +142,21 @@ public class LevelController : MonoBehaviour
             IsPaused = true;
             _winScreenPanel.SetActive(true);
             PlayerPrefs.DeleteKey(Constants.PREFS_KEY_CURRENT_QUEST);
+            if(PlayerPrefs.HasKey(Constants.PREFS_KEY_GEM_COUNT))
+            {
+                PlayerPrefs.SetInt(
+                    Constants.PREFS_KEY_GEM_COUNT, 
+                    PlayerPrefs.GetInt(Constants.PREFS_KEY_GEM_COUNT) + _collectableDataController.CollectedGemCount
+                    );
+            }
+            else
+            {
+                PlayerPrefs.SetInt(
+                    Constants.PREFS_KEY_GEM_COUNT,
+                    _collectableDataController.CollectedGemCount
+                    );
+            }
+            
         }
         else
         {

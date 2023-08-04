@@ -3,14 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShipBehaviour : MonoBehaviour
+public abstract class ShipBehaviour : MonoBehaviour
 {
     [SerializeField] private GameObject _explosionPrefab;
-    public void Die()
+    public virtual void Die()
     {
-        ResetSavedData();
-        LevelController levelController = GameObject.FindObjectOfType<LevelController>();
-        levelController.DisplayEndGame();
+        //ResetSavedData();
+        //LevelController levelController = GameObject.FindObjectOfType<LevelController>();
+        //levelController.DisplayEndGame();
         GameObject explosion = GameObject.Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
         Animator explosionAnimator = explosion.GetComponent<Animator>();
         float delay = explosionAnimator.GetCurrentAnimatorStateInfo(0).length;
@@ -20,8 +20,8 @@ public class ShipBehaviour : MonoBehaviour
 
 
 
-    private void ResetSavedData()
-    {
-        PlayerPrefs.DeleteKey(Constants.PREFS_KEY_CURRENT_QUEST);
-    }
+    //private void ResetSavedData()
+    //{
+    //    PlayerPrefs.DeleteKey(Constants.PREFS_KEY_CURRENT_QUEST);
+    //}
 }
