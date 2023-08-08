@@ -3,32 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class LevelController : MonoBehaviour
 {
-
+    [SerializeField] private List<LevelScriptableObject> _levelTypes;
+    [SerializeField] private GameObject _bg;
 
     [Header("UI")]
     [SerializeField] private GameUIController _gameUIController;
     [SerializeField] private GameObject _pauseMenu;
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private GameObject _winScreenPanel;
+    [SerializeField] private GameObject _floatingTextBox;
     [SerializeField] private CollectableDataController _collectableDataController;
+
 
     public static bool IsPaused { get; protected set; }
     private bool _isWon;
+    private bool _isTextShowing;
 
     public Quest currentQuest { get; protected set; }
     public Vector2 mapLimits { get; protected set; }
 
     private void Awake()
     {
-        mapLimits = new Vector2(100,100);
+        mapLimits = new Vector2(100, 100);
     }
-
     private void Start()
     {
+        InitializeLevelSettings();
         currentQuest = LoadQuestFromLocal();
+        _isTextShowing = false;
 
         if (currentQuest == null)
         {
@@ -48,8 +54,13 @@ public class LevelController : MonoBehaviour
             ((CargoQuest)currentQuest).CollectedCargoCount,
             ((CargoQuest)currentQuest).TargetCargoCount
             );
+        string cargoQuestText = "You need to collect " + ((CargoQuest)currentQuest).TargetCargoCount +
+            " cargos and return them back to SpaceStation";
+        StartCoroutine(ShowFloatingText(cargoQuestText, 5));
+
     }
 
+    
     void Update()
     {
         if (!_isWon && Input.GetKeyDown(KeyCode.Escape))
@@ -160,7 +171,36 @@ public class LevelController : MonoBehaviour
         }
         else
         {
-            Debug.Log("remaining cargo to collect: "+ (((CargoQuest)currentQuest).TargetCargoCount - ((CargoQuest)currentQuest).CollectedCargoCount) );
+            string remainingCargoText = "You need to collect "+ 
+                (((CargoQuest)currentQuest).TargetCargoCount - ((CargoQuest)currentQuest).CollectedCargoCount)+
+                " more cargos to win the game.";
+            if(!_isTextShowing) StartCoroutine(ShowFloatingText(remainingCargoText, 3f));
         }
+    }
+
+    IEnumerator ShowFloatingText(string text, float time)
+    {
+        _isTextShowing = true;
+        _floatingTextBox.SetActive(true);
+        _floatingTextBox.GetComponentInChildren<TextMeshProUGUI>().text = text;
+        yield return new WaitForSeconds(time);
+        _floatingTextBox.SetActive(false);
+        _isTextShowing = false;
+    }
+
+
+    private void InitializeLevelSettings()
+    {
+        string jsonString = PlayerPrefs.GetString(Constants.PREFS_PLAYER_DATA, string.Empty);
+        PlayerData playerData = JsonConvert.DeserializeObject<PlayerData>(jsonString, settings: new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.All,
+        });
+
+        LevelScriptableObject currentLevel = _levelTypes.Find((level) => level.LevelName == playerData.LevelName);
+        _bg.transform.GetComponent<SpriteRenderer>().sprite = currentLevel.BackgroundSprite;
+        //mapLimits = currentLevel.MapLimits;
+        //TODO: set map limits, then call spawn controller
+        
     }
 }

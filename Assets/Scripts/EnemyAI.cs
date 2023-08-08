@@ -14,7 +14,7 @@ public class EnemyAI : MonoBehaviour
     private bool _isNewPathNeeded;
     private int _currentWaypoint = 0;
     //[SerializeField] private float _nextWaypointDistance = 3f;
-    private float speed = 100f;
+    private float speed = 70f;
 
     // Start is called before the first frame update
 
@@ -82,7 +82,6 @@ public class EnemyAI : MonoBehaviour
         Vector2 force = direction * speed;
         _rigidbody.AddForce(force);
 
-       
        
         //float distance = Vector2.Distance(_rigidbody.position, _path.vectorPath[_currentWaypoint]);
         //Debug.Log("distance: " + distance + " _nextWaypointDistance: " + _nextWaypointDistance + " current: " + _currentWaypoint);

@@ -42,9 +42,9 @@ public class EnemyShipBehaviour : ShipBehaviour
     // Update is called once per frame
     void Update()
     {
-        //TODO: when spawns near spaceship, doesnt follow and continue to shoot
+        //TODO: when spawns near spaceship, doesnt follow and continue to shoot. Solved mysteriously
 
-        //TODO: Too laggy even with 2 ships
+        //TODO: Too laggy even with 2 ships Solved with scan after asteroid die
         if (_targetSpaceShip == null)
         {
             return;

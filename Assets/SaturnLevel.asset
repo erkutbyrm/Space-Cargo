@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelName: Saturn
   GemCount: 10
-  GemColour: {r: 0.5, g: 0.29846734, b: 0, a: 0}
+  GemColour: {r: 0.5, g: 0.29846734, b: 0, a: 1}
   AsteroidCount: 200
   EnemyCount: 5
   CargoCount: 12
   SpeedBoostCount: 20
-  BackgroundImage: {fileID: 3965341041374996557, guid: 4069b64d0ca23f7458c3a124a192f739, type: 3}
+  MapLimits: {x: 100, y: 100}
+  BackgroundSprite: {fileID: 21300000, guid: 4273045865a8552429a58c3ea6d56a2e, type: 3}

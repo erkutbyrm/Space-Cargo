@@ -1,20 +1,25 @@
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnController : MonoBehaviour
 {
+    [SerializeField] private List<LevelScriptableObject> _levelTypes;
+    private Color _gemColor;
+    //TODO:
+
     [SerializeField] private GameObject[] _asteroidPrefabs;
     [SerializeField] private GameObject _gemPrefab;
     [SerializeField] private GameObject _cargoPrefab;
     [SerializeField] private GameObject _enemyPrefab;
     [SerializeField] private GameObject _speedBoostPrefab;
 
-    [SerializeField] private int _asteroidSpawnCount = 0;
-    [SerializeField] private int _gemSpawnCount = 0;
-    [SerializeField] private int _cargoSpawnCount = 0;
-    [SerializeField] private int _enemySpawnCount = 0;
-    [SerializeField] private int _speedBoostSpawnCount = 0;
+    private int _asteroidSpawnCount = 0;
+    private int _gemSpawnCount = 0;
+    private int _cargoSpawnCount = 0;
+    private int _enemySpawnCount = 0;
+    private int _speedBoostSpawnCount = 0;
 
     [SerializeField] private float _spawnSpaceInterval;
     private readonly Vector2 NOT_FOUND_VECTOR2 = new Vector2(-99f,-99f);
@@ -24,6 +29,8 @@ public class SpawnController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        InitializeFromLocal();
+        Debug.Log("ast:" + _asteroidSpawnCount);
         while (_asteroidSpawnCount > 0 || _cargoSpawnCount > 0 || _gemSpawnCount > 0 || _enemySpawnCount > 0 || _speedBoostSpawnCount > 0)
         {
             if(_cargoSpawnCount > 0)
@@ -89,7 +96,8 @@ public class SpawnController : MonoBehaviour
             return;
         }
 
-        GameObject.Instantiate(_gemPrefab, spawnPos, Quaternion.identity, transform);
+        GameObject newGem = GameObject.Instantiate(_gemPrefab, spawnPos, Quaternion.identity, transform);
+        _gemPrefab.transform.GetComponent<SpriteRenderer>().color = _gemColor;
     }
 
     private void SpawnEnemy()
@@ -141,5 +149,24 @@ public class SpawnController : MonoBehaviour
         {
             return NOT_FOUND_VECTOR2;
         }
+    }
+
+    private void InitializeFromLocal()
+    {
+        string jsonString = PlayerPrefs.GetString(Constants.PREFS_PLAYER_DATA, string.Empty);
+        PlayerData playerData = JsonConvert.DeserializeObject<PlayerData>(jsonString, settings: new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.All,
+        });
+
+        LevelScriptableObject currentLevel = _levelTypes.Find((level) => level.LevelName == playerData.LevelName);
+
+        _asteroidSpawnCount = currentLevel.AsteroidCount;
+        _gemSpawnCount = currentLevel.GemCount;
+        _cargoSpawnCount = currentLevel.CargoCount;
+        _enemySpawnCount = currentLevel.EnemyCount;
+        _speedBoostSpawnCount = currentLevel.SpeedBoostCount;
+        _gemColor = currentLevel.GemColour;
+
     }
 }

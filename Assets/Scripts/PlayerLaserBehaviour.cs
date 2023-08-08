@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,5 +21,10 @@ public class PlayerLaserBehaviour : LaserBehaviour
         }
 
         base.OnTriggerEnter2D(collision);
+    }
+
+    public void SetPlayerLaserDamage(int damage)
+    {
+        LaserDamage = damage;
     }
 }

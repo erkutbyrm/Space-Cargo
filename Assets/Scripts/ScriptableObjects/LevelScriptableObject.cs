@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "ScriptableObjects/LevelScriptableObject")]
+[CreateAssetMenu(fileName = "NewLevel" ,menuName = "ScriptableObjects/Level")]
 public class LevelScriptableObject : ScriptableObject
 {
     public string LevelName;
@@ -12,5 +12,6 @@ public class LevelScriptableObject : ScriptableObject
     public int EnemyCount;
     public int CargoCount;
     public int SpeedBoostCount;
-    public GameObject BackgroundImage;
+    public Vector2 MapLimits;
+    public Sprite BackgroundSprite;
 }

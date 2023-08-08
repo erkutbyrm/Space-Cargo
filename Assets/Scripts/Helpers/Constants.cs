@@ -23,5 +23,8 @@ public static class Constants
 
     public const string PREFS_KEY_CURRENT_QUEST = "CurrentQuest";
     public const string PREFS_KEY_GEM_COUNT = "GemCount";
+    public const string PREFS_CURRENT_SPEED_UPGRADE = "CurrentSpeedUpgrade";
+    public const string PREFS_PLAYER_DATA = "PlayerData";
+
 
 }

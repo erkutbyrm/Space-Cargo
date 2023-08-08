@@ -301,6 +301,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _explosionPrefab: {fileID: 5798926025909061627, guid: bbcb88311d2638143a0fad1981b3cd5c, type: 3}
+  _shipTypes:
+  - {fileID: 11400000, guid: 64a1693671dcd684c9e123ecc341c873, type: 2}
   _rotationSpeed: 5
   _currentSpeed: 0
   _maxSpeed: 5
