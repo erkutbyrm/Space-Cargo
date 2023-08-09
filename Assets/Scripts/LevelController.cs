@@ -8,16 +8,20 @@ using TMPro;
 public class LevelController : MonoBehaviour
 {
     [SerializeField] private List<LevelScriptableObject> _levelTypes;
+    private LevelScriptableObject _currentLevel;
     [SerializeField] private GameObject _bg;
+    
 
     [Header("UI")]
-    [SerializeField] private GameUIController _gameUIController;
     [SerializeField] private GameObject _pauseMenu;
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private GameObject _winScreenPanel;
     [SerializeField] private GameObject _floatingTextBox;
+    [SerializeField] private GameUIController _gameUIController;
+    
+    
     [SerializeField] private CollectableDataController _collectableDataController;
-
+    [SerializeField] private SpawnController _spawnController;
 
     public static bool IsPaused { get; protected set; }
     private bool _isWon;
@@ -26,23 +30,20 @@ public class LevelController : MonoBehaviour
     public Quest currentQuest { get; protected set; }
     public Vector2 mapLimits { get; protected set; }
 
-    private void Awake()
-    {
-        mapLimits = new Vector2(100, 100);
-    }
     private void Start()
     {
         InitializeLevelSettings();
-        currentQuest = LoadQuestFromLocal();
+        _spawnController.Initialize(_currentLevel, out int spawnedCargoCount);
+        //currentQuest = LoadQuestFromLocal();
         _isTextShowing = false;
+        currentQuest = GenerateCargoQuest(spawnedCargoCount);
 
-        if (currentQuest == null)
-        {
-            currentQuest = GenerateCargoQuest();
-            Debug.Log("generated");
-            SaveQuestToLocal(currentQuest);
-        }
-        Debug.Log("quest target count: " + ((CargoQuest)currentQuest).TargetCargoCount);
+        //if (currentQuest == null)
+        //{
+        //    currentQuest = GenerateCargoQuest(spawnedCargoCount);
+        //    Debug.Log("generated");
+        //    SaveQuestToLocal(currentQuest);
+        //}
         Time.timeScale = 1f;
         IsPaused = false;
         _isWon = false;
@@ -76,35 +77,35 @@ public class LevelController : MonoBehaviour
         }
     }
 
-    private Quest LoadQuestFromLocal()
-    {
-        string jsonString = PlayerPrefs.GetString(Constants.PREFS_KEY_CURRENT_QUEST, string.Empty);
-        return JsonConvert.DeserializeObject<Quest>(jsonString, settings: new JsonSerializerSettings
-        {
-            TypeNameHandling = TypeNameHandling.All,
-        });
-    }
+    //private Quest LoadQuestFromLocal()
+    //{
+    //    string jsonString = PlayerPrefs.GetString(Constants.PREFS_KEY_CURRENT_QUEST, string.Empty);
+    //    return JsonConvert.DeserializeObject<Quest>(jsonString, settings: new JsonSerializerSettings
+    //    {
+    //        TypeNameHandling = TypeNameHandling.All,
+    //    });
+    //}
 
-    private void SaveQuestToLocal(Quest quest)
-    {
-        string jsonString = JsonConvert.SerializeObject(quest, settings: new JsonSerializerSettings()
-        {
-            TypeNameHandling = TypeNameHandling.All,
-        });
-        PlayerPrefs.SetString(Constants.PREFS_KEY_CURRENT_QUEST, jsonString);
-    }
+    //private void SaveQuestToLocal(Quest quest)
+    //{
+    //    string jsonString = JsonConvert.SerializeObject(quest, settings: new JsonSerializerSettings()
+    //    {
+    //        TypeNameHandling = TypeNameHandling.All,
+    //    });
+    //    PlayerPrefs.SetString(Constants.PREFS_KEY_CURRENT_QUEST, jsonString);
+    //}
 
-    private Quest GenerateCargoQuest()
+    private Quest GenerateCargoQuest(int spawnedCargoCount)
     {
-        return new CargoQuest(3);
+        return new CargoQuest(spawnedCargoCount);
     }
 
     private void OnDestroy()
     {
-        if (PlayerPrefs.HasKey(Constants.PREFS_KEY_CURRENT_QUEST))
-        {
-            SaveQuestToLocal(currentQuest);
-        }
+        //if (PlayerPrefs.HasKey(Constants.PREFS_KEY_CURRENT_QUEST))
+        //{
+        //    SaveQuestToLocal(currentQuest);
+        //}
     }
 
     public void PauseGame()
@@ -145,7 +146,6 @@ public class LevelController : MonoBehaviour
 
    public void TryWin()
     {
-        Debug.Log("gemco"+PlayerPrefs.GetInt(Constants.PREFS_KEY_GEM_COUNT));
         if (currentQuest.CheckCompleted())
         {
             _isWon = true;
@@ -153,21 +153,9 @@ public class LevelController : MonoBehaviour
             IsPaused = true;
             _winScreenPanel.SetActive(true);
             PlayerPrefs.DeleteKey(Constants.PREFS_KEY_CURRENT_QUEST);
-            if(PlayerPrefs.HasKey(Constants.PREFS_KEY_GEM_COUNT))
-            {
-                PlayerPrefs.SetInt(
-                    Constants.PREFS_KEY_GEM_COUNT, 
-                    PlayerPrefs.GetInt(Constants.PREFS_KEY_GEM_COUNT) + _collectableDataController.CollectedGemCount
-                    );
-            }
-            else
-            {
-                PlayerPrefs.SetInt(
-                    Constants.PREFS_KEY_GEM_COUNT,
-                    _collectableDataController.CollectedGemCount
-                    );
-            }
-            
+
+            DataController.Instance.PlayerData.GemCount += _collectableDataController.CollectedGemCount;
+            DataController.Instance.WriteDataToPrefs<PlayerData>(DataController.Instance.PlayerData, Constants.PREFS_PLAYER_DATA);
         }
         else
         {
@@ -191,16 +179,10 @@ public class LevelController : MonoBehaviour
 
     private void InitializeLevelSettings()
     {
-        string jsonString = PlayerPrefs.GetString(Constants.PREFS_PLAYER_DATA, string.Empty);
-        PlayerData playerData = JsonConvert.DeserializeObject<PlayerData>(jsonString, settings: new JsonSerializerSettings
-        {
-            TypeNameHandling = TypeNameHandling.All,
-        });
+        _currentLevel = _levelTypes.Find((level) => level.LevelName == DataController.Instance.PlayerData.LevelName);
+        _bg.transform.GetComponent<SpriteRenderer>().sprite = _currentLevel.BackgroundSprite;
 
-        LevelScriptableObject currentLevel = _levelTypes.Find((level) => level.LevelName == playerData.LevelName);
-        _bg.transform.GetComponent<SpriteRenderer>().sprite = currentLevel.BackgroundSprite;
-        //mapLimits = currentLevel.MapLimits;
+        mapLimits = _currentLevel.MapLimits;
         //TODO: set map limits, then call spawn controller
-        
     }
 }

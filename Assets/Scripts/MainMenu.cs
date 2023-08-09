@@ -14,12 +14,14 @@ public class MainMenu : MonoBehaviour
         if (!PlayerPrefs.HasKey(Constants.PREFS_PLAYER_DATA))
         {
             Debug.Log("creaated playerdata");
-            PlayerData playerData = new PlayerData("Earth", "SpaceShip_1", 0);
-            string jsonString = JsonConvert.SerializeObject(playerData, settings: new JsonSerializerSettings()
-            {
-                TypeNameHandling = TypeNameHandling.All,
-            });
-            PlayerPrefs.SetString(Constants.PREFS_PLAYER_DATA, jsonString);
+            Dictionary<string, int> upgrades = new Dictionary<string, int>();
+            upgrades.Add(Constants.PLAYER_UPGRADE_SPEED, 0);
+            upgrades.Add(Constants.PLAYER_UPGRADE_HEALTH, 0);
+
+            PlayerData playerData = new PlayerData("Earth", "SpaceShip_1", upgradesDictionary: upgrades, gemCount: 500);
+            DataController.Instance.WriteDataToPrefs<PlayerData>(playerData, Constants.PREFS_PLAYER_DATA);
+            DataController.Instance.Initialize();
+            //TODO: should not call initialize here!!
         }
     }
 
@@ -31,12 +33,17 @@ public class MainMenu : MonoBehaviour
 
     public void PlayGame()
     {
-        SceneManager.LoadScene("MapSelectionScene");
+        SceneManager.LoadScene(Constants.SCENE_MAP_SELECT);
     }
 
     public void GoToSettingsMenu()
     {
 
+    }
+
+    public void GoToMarket()
+    {
+        SceneManager.LoadScene(Constants.SCENE_MARKET);
     }
 
     public void QuitGame()

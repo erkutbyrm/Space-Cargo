@@ -172,13 +172,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 167533544}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -13.728677, y: -5.7068887, z: 0.9604011}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_Father: {fileID: 1893875709}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &170970263
 GameObject:
@@ -836,7 +836,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5308193480115302561, guid: 14f4d6c41b7f0f74dabd49e095a7abf5, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5308193480115302561, guid: 14f4d6c41b7f0f74dabd49e095a7abf5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -932,13 +932,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 475373790}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -13.728677, y: -5.7068887, z: 0.9604011}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_Father: {fileID: 1893875709}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &481721532
 GameObject:
@@ -2625,7 +2625,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2995618172396860407, guid: 41ab0339a442597498c696abb94bcae6, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2995618172396860407, guid: 41ab0339a442597498c696abb94bcae6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3759,12 +3759,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8041343544d47fa4296f26bd06879dbe, type: 2}
   - {fileID: 11400000, guid: b79a295f6386a5045bcec47298cff859, type: 2}
   _bg: {fileID: 497404694}
-  _gameUIController: {fileID: 952216802}
   _pauseMenu: {fileID: 1061476064}
   _gameOverPanel: {fileID: 202284123}
   _winScreenPanel: {fileID: 891071869}
   _floatingTextBox: {fileID: 2073655977}
+  _gameUIController: {fileID: 952216802}
   _collectableDataController: {fileID: 268291584}
+  _spawnController: {fileID: 475373791}
 --- !u!1 &1717274252
 GameObject:
   m_ObjectHideFlags: 0
@@ -4285,8 +4286,10 @@ Transform:
   - {fileID: 1544894334}
   - {fileID: 481721533}
   - {fileID: 268291583}
+  - {fileID: 475373792}
+  - {fileID: 167533546}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1920698735
 GameObject:

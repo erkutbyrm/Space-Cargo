@@ -20,11 +20,17 @@ public static class Constants
 
     public const string SCENE_MAIN_MENU = "MainMenuScene";
     public const string SCENE_GAME = "GameScene";
+    public const string SCENE_MAP_SELECT = "MapSelectionScene";
+    public const string SCENE_MARKET = "MarketScene";
 
     public const string PREFS_KEY_CURRENT_QUEST = "CurrentQuest";
     public const string PREFS_KEY_GEM_COUNT = "GemCount";
     public const string PREFS_CURRENT_SPEED_UPGRADE = "CurrentSpeedUpgrade";
     public const string PREFS_PLAYER_DATA = "PlayerData";
+
+
+    public const string PLAYER_UPGRADE_SPEED = "PlayerSpeedUpgrade";
+    public const string PLAYER_UPGRADE_HEALTH = "PlayerHealthUpgrade";
 
 
 }

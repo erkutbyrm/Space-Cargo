@@ -1,72 +1,146 @@
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MarketUIController : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI _gemsText;
     [SerializeField] GameObject _barPrefab;
-    [SerializeField] private GameObject _barContainer;
+    [SerializeField] private GameObject _barContainerSpeed;
+    [SerializeField] private GameObject _barContainerHealth;
+    [SerializeField] private GameObject _textNotEnoughGems;
+
+    private float _textTime = 3f;
+    private bool _isTextShowing = false;
 
     private int _gemCount;
     private int _currentSpeedUpgrade;
-    private int _totalSpeedUpgradeCount = 10;
-    private int _currentSpeedUpgradePrice = 2;
+    private int _currentHealthUpgrade;
+    private int _totalSpeedUpgradeCount;
+    private int _totalHealthUpgradeCount;
+    private int _currentSpeedUpgradePrice = 10;
+    private int _currentHealthUpgradePrice = 5;
 
-    private List<GameObject> _barList = new List<GameObject>();
+
+    private Dictionary<string, List<GameObject>> _barDictionary = new Dictionary<string, List<GameObject>>();
+
+    private const string GEM = "Gem";
+
 
     void Start()
     {
+        Initialize();
+        _barDictionary.Add(Constants.PLAYER_UPGRADE_SPEED, new List<GameObject>());
+        _barDictionary.Add(Constants.PLAYER_UPGRADE_HEALTH, new List<GameObject>());
+        _textNotEnoughGems.SetActive(false);
+        _isTextShowing = false;
         DrawGemCount();
-        DrawBars();
-        UpdateBars();
+        DrawSpeedUpgrade();
+        DrawHealthUpgrade();
     }
 
+    private void Initialize()
+    {
+        _totalSpeedUpgradeCount = DataController.Instance.PlayerData.TotalSpeedUpgrade;
+        _totalHealthUpgradeCount = DataController.Instance.PlayerData.TotalHealthUpgrade;
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene(Constants.SCENE_MAIN_MENU);
+        }
+    }
     public void DrawGemCount()
     {
-        UpdateGemCountFromLocal();
+        UpdateFromLocal(GEM);
         _gemsText.text = "Total Gems: " + _gemCount;
     }
-
-    private void UpdateGemCountFromLocal()
+    private void UpdateFromLocal(string name)
     {
-        _gemCount = PlayerPrefs.GetInt(Constants.PREFS_KEY_GEM_COUNT);
-    }
-
-    private void UpdateCurrentSpeedUpgradeFromLocal()
-    {
-        //TODO: make it from player data
-        _currentSpeedUpgrade = PlayerPrefs.GetInt(Constants.PREFS_CURRENT_SPEED_UPGRADE);
+        switch (name)
+        {
+            case GEM:
+                _gemCount = DataController.Instance.PlayerData.GemCount;
+                break;
+            case Constants.PLAYER_UPGRADE_SPEED:
+                _currentSpeedUpgrade = DataController.Instance.PlayerData.Upgrades[Constants.PLAYER_UPGRADE_SPEED];
+                break;
+            case Constants.PLAYER_UPGRADE_HEALTH:
+                _currentHealthUpgrade = DataController.Instance.PlayerData.Upgrades[Constants.PLAYER_UPGRADE_HEALTH];
+                break;
+            default:
+                break;
+        }
     }
 
     public void DrawSpeedUpgrade()
     {
-        DrawBars();
+        DrawBars(Constants.PLAYER_UPGRADE_SPEED, _totalSpeedUpgradeCount);
+        UpdateBars(Constants.PLAYER_UPGRADE_SPEED);
     }
 
-    public void DrawBars()
+    public void DrawHealthUpgrade()
     {
-        for (int i = 0; i < _totalSpeedUpgradeCount; i++)
+        DrawBars(Constants.PLAYER_UPGRADE_HEALTH, _totalHealthUpgradeCount);
+        UpdateBars(Constants.PLAYER_UPGRADE_HEALTH);
+    }
+
+    public void DrawBars(string upgradeName, int count)
+    {
+        GameObject _barContainer;
+        switch (upgradeName)
+        {
+            case Constants.PLAYER_UPGRADE_SPEED:
+                _barContainer = _barContainerSpeed;
+                break;
+            case Constants.PLAYER_UPGRADE_HEALTH:
+                _barContainer = _barContainerHealth;
+                Debug.Log("hel");
+                break;
+            default:
+                _barContainer = _barContainerSpeed;
+                break;
+        }
+        for (int i = 0; i < count; i++)
         {
             GameObject newBar = Instantiate(_barPrefab, _barContainer.transform);
             newBar.transform.localScale = new Vector3(2,2,1);
-            _barList.Add(newBar);
+            _barDictionary[upgradeName].Add(newBar);
         }
     }
 
-    public void UpdateBars()
+    public void UpdateBars(string upgradeName)
     {
-        UpdateCurrentSpeedUpgradeFromLocal();
-        for (int i = 0; i < _barList.Count; i++)
+        UpdateFromLocal(upgradeName);
+        int currentFullBar;
+        switch (upgradeName)
         {
-            if (i < _currentSpeedUpgrade)
+            case Constants.PLAYER_UPGRADE_SPEED:
+                currentFullBar = _currentSpeedUpgrade;
+                break;
+            case Constants.PLAYER_UPGRADE_HEALTH:
+                currentFullBar = _currentHealthUpgrade;
+                Debug.Log("lo");
+                break;
+            default:
+                currentFullBar = 0;
+                break;
+        }
+
+        for (int i = 0; i < _barDictionary[upgradeName].Count; i++)
+        {
+            if (i < currentFullBar)
             {
-                _barList[i].transform.Find(Constants.NAME_BAR_FULL).gameObject.SetActive(true);
+                _barDictionary[upgradeName][i].transform.Find(Constants.NAME_BAR_FULL).gameObject.SetActive(true);
             }
             else
             {
-                _barList[i].transform.Find(Constants.NAME_BAR_FULL).gameObject.SetActive(false);
+                _barDictionary[upgradeName][i].transform.Find(Constants.NAME_BAR_FULL).gameObject.SetActive(false);
             }
         }
     }
@@ -76,18 +150,59 @@ public class MarketUIController : MonoBehaviour
 
     public void UpgradeSpeed()
     {
-        if( _gemCount > _currentSpeedUpgradePrice)//TODO: condition is met
+        if( _gemCount >= _currentSpeedUpgradePrice && _currentSpeedUpgrade < _totalSpeedUpgradeCount)//TODO: condition is met
         {
             _currentSpeedUpgrade++;
             _gemCount -= _currentSpeedUpgradePrice;
-            PlayerPrefs.SetInt(Constants.PREFS_KEY_GEM_COUNT, _gemCount);
-            PlayerPrefs.SetInt(Constants.PREFS_CURRENT_SPEED_UPGRADE, _currentSpeedUpgrade);
+
+            DataController.Instance.PlayerData.Upgrades[Constants.PLAYER_UPGRADE_SPEED] = _currentSpeedUpgrade;
+            DataController.Instance.PlayerData.GemCount = _gemCount;
+
+            DataController.Instance.WriteDataToPrefs<PlayerData>(DataController.Instance.PlayerData, Constants.PREFS_PLAYER_DATA);
+            
             DrawGemCount();
-            UpdateBars();
+            UpdateBars(Constants.PLAYER_UPGRADE_SPEED);
         }
         else
         {
-            Debug.Log("You do not have enough gems to buy this upgrade!");
+            if(!_isTextShowing)
+            {
+                StartCoroutine(NotEnoughGemsCoroutine());
+            }
         }
+    }
+
+    public void UpgradeHealth()
+    {
+        if (_gemCount >= _currentSpeedUpgradePrice && _currentHealthUpgrade < _totalHealthUpgradeCount)//TODO: condition is met
+        {
+            _currentHealthUpgrade++;
+            _gemCount -= _currentHealthUpgradePrice;
+
+            DataController.Instance.PlayerData.Upgrades[Constants.PLAYER_UPGRADE_HEALTH] = _currentHealthUpgrade;
+            DataController.Instance.PlayerData.GemCount = _gemCount;
+
+            DataController.Instance.WriteDataToPrefs<PlayerData>(DataController.Instance.PlayerData, Constants.PREFS_PLAYER_DATA);
+
+            DrawGemCount();
+            UpdateBars(Constants.PLAYER_UPGRADE_HEALTH);
+
+        }
+        else
+        {
+            if (!_isTextShowing)
+            {
+                StartCoroutine(NotEnoughGemsCoroutine());
+            }
+        }
+    }
+
+    IEnumerator NotEnoughGemsCoroutine()
+    {
+        _isTextShowing = true;
+        _textNotEnoughGems.SetActive(true);
+        yield return new WaitForSeconds(_textTime);
+        _textNotEnoughGems.SetActive(false);
+        _isTextShowing = false;
     }
 }

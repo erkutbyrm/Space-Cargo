@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,13 +5,8 @@ using UnityEngine;
 
 public class PlayerShipBehaviour : ShipBehaviour
 {
-    [SerializeField] List<SpaceShipScriptableObject> _shipTypes;
-
     public static event Action<float> OnSpeedBoost;
 
-    public override int MaxHealth { get; protected set; } = 50;
-    public override int CollisionDamage { get; protected set; } = 1;
-    private GameUIController _gameUIController;
 
     [Header("Movement")]
     [SerializeField] private float _rotationSpeed = 5f;
@@ -24,7 +18,6 @@ public class PlayerShipBehaviour : ShipBehaviour
     [SerializeField] private Animator _animator;
     private Vector2 _movement;
     private Vector3 mousePos;
-
     private float _remainingBoostInSeconds = 0;
     private bool _isBoostActive = false;
 
@@ -32,12 +25,19 @@ public class PlayerShipBehaviour : ShipBehaviour
     [SerializeField] private Transform _laserStartPoint;
     [SerializeField] private GameObject _laserPrefab;
 
+    //HEALTH & DAMAGE
+    public override int MaxHealth { get; protected set; } = 5;
+    public override int CollisionDamage { get; protected set; } = 1;
+    private GameUIController _gameUIController;
+
+    [Header("Scriptable Objects")]
+    [SerializeField] List<SpaceShipScriptableObject> _shipTypes;
+
     public override void Start()
     {
         PlayerDataInitialization();
         _gameUIController = GameObject.FindObjectOfType<GameUIController>();
         base.Start();
-        Debug.Log(MaxHealth);
     }
 
     // HEALTH
@@ -176,22 +176,17 @@ public class PlayerShipBehaviour : ShipBehaviour
         }
     }
 
-    //PLAYER DATA INIT
+    //PLAYER DATA INITIALIZE
 
     private void PlayerDataInitialization()
     {
-        
-        string jsonString = PlayerPrefs.GetString(Constants.PREFS_PLAYER_DATA, string.Empty);
-        PlayerData playerData = JsonConvert.DeserializeObject<PlayerData>(jsonString, settings: new JsonSerializerSettings
-        {
-            TypeNameHandling = TypeNameHandling.All,
-        });
+        SpaceShipScriptableObject _currentShipType = _shipTypes.Find(
+            (ship) =>  ship.SpaceShipName == DataController.Instance.PlayerData.SpaceShipName
+            );
 
-        SpaceShipScriptableObject _currentShipType = _shipTypes.Find((ship) =>  ship.SpaceShipName == playerData.SpaceShipName);
-        
         _laserPrefab.GetComponent<PlayerLaserBehaviour>().SetPlayerLaserDamage(_currentShipType.LaserDamage);
-        _maxSpeed = _currentShipType.Speed;
-        MaxHealth = _currentShipType.MaxHealth;
         transform.GetComponent<SpriteRenderer>().sprite = _currentShipType.SpaceShipSprite;
+        _maxSpeed = _currentShipType.Speed + DataController.Instance.PlayerData.Upgrades[Constants.PLAYER_UPGRADE_SPEED];
+        MaxHealth = _currentShipType.MaxHealth + DataController.Instance.PlayerData.Upgrades[Constants.PLAYER_UPGRADE_HEALTH];
     }
 }

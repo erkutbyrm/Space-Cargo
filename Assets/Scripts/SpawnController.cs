@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class SpawnController : MonoBehaviour
 {
-    [SerializeField] private List<LevelScriptableObject> _levelTypes;
     private Color _gemColor;
     //TODO:
 
@@ -26,16 +25,18 @@ public class SpawnController : MonoBehaviour
 
     [SerializeField] private LevelController _levelController;
     
-    // Start is called before the first frame update
-    void Start()
+    public void Initialize(LevelScriptableObject currentLevel, out int totalSpawnedCargo)
     {
-        InitializeFromLocal();
-        Debug.Log("ast:" + _asteroidSpawnCount);
+        totalSpawnedCargo = 0;
+        InitializeFromLocal(currentLevel);
         while (_asteroidSpawnCount > 0 || _cargoSpawnCount > 0 || _gemSpawnCount > 0 || _enemySpawnCount > 0 || _speedBoostSpawnCount > 0)
         {
             if(_cargoSpawnCount > 0)
             {
-                SpawnCargo();
+                if (SpawnCargo())
+                {
+                    totalSpawnedCargo++;
+                }
                 _cargoSpawnCount--;
             }
             
@@ -77,15 +78,15 @@ public class SpawnController : MonoBehaviour
         GameObject.Instantiate(_asteroidPrefabs[index], spawnPos, Quaternion.identity, transform);
     }
 
-    private void SpawnCargo()
+    private GameObject SpawnCargo()
     {
         Vector2 spawnPos = FindSpawnPosition();
         if (spawnPos == NOT_FOUND_VECTOR2)
         {
-            return;
+            return null;
         }
 
-        GameObject.Instantiate(_cargoPrefab, spawnPos, Quaternion.identity, transform);
+        return GameObject.Instantiate(_cargoPrefab, spawnPos, Quaternion.identity, transform);
     }
 
     private void SpawnGem()
@@ -151,22 +152,13 @@ public class SpawnController : MonoBehaviour
         }
     }
 
-    private void InitializeFromLocal()
+    private void InitializeFromLocal(LevelScriptableObject currentLevel)
     {
-        string jsonString = PlayerPrefs.GetString(Constants.PREFS_PLAYER_DATA, string.Empty);
-        PlayerData playerData = JsonConvert.DeserializeObject<PlayerData>(jsonString, settings: new JsonSerializerSettings
-        {
-            TypeNameHandling = TypeNameHandling.All,
-        });
-
-        LevelScriptableObject currentLevel = _levelTypes.Find((level) => level.LevelName == playerData.LevelName);
-
         _asteroidSpawnCount = currentLevel.AsteroidCount;
         _gemSpawnCount = currentLevel.GemCount;
         _cargoSpawnCount = currentLevel.CargoCount;
         _enemySpawnCount = currentLevel.EnemyCount;
         _speedBoostSpawnCount = currentLevel.SpeedBoostCount;
         _gemColor = currentLevel.GemColour;
-
     }
 }
