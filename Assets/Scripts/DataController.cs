@@ -56,7 +56,6 @@ public class DataController
         {
             TypeNameHandling = TypeNameHandling.All,
         });
-        Debug.Log(jsonString);
         PlayerPrefs.SetString(key, jsonString);
     }
 }

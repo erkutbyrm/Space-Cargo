@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: EarthLevel
   m_EditorClassIdentifier: 
   LevelName: Earth
+  LevelDescription: {fileID: 4900000, guid: d1785116f9279084b9d3d5440c686ae2, type: 3}
   GemCount: 30
   GemColour: {r: 0, g: 0.6132076, b: 0.10340366, a: 1}
   AsteroidCount: 20

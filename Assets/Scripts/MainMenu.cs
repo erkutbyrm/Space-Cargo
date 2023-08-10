@@ -1,16 +1,21 @@
-using Newtonsoft.Json;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] private LevelScriptableObject _baseLevel;
-    [SerializeField] private SpaceShipScriptableObject _baseShip;
+    [SerializeField] private GameObject _mainMenu;
+    [SerializeField] private GameObject _mapSelectionMenu;
+    [SerializeField] private GameObject _marketPanel;
+    [SerializeField] private GameObject _mapInfoPanel;
+
+
     // Start is called before the first frame update
     void Start()
     {
+        _mainMenu.SetActive(true);
+        _mapSelectionMenu.SetActive(false);
+        _marketPanel.SetActive(false);
+        _mapInfoPanel.SetActive(false);
         if (!PlayerPrefs.HasKey(Constants.PREFS_PLAYER_DATA))
         {
             Debug.Log("creaated playerdata");
@@ -33,7 +38,8 @@ public class MainMenu : MonoBehaviour
 
     public void PlayGame()
     {
-        SceneManager.LoadScene(Constants.SCENE_MAP_SELECT);
+        _mapSelectionMenu.SetActive(true);
+        _mainMenu.SetActive(false);
     }
 
     public void GoToSettingsMenu()
@@ -43,7 +49,8 @@ public class MainMenu : MonoBehaviour
 
     public void GoToMarket()
     {
-        SceneManager.LoadScene(Constants.SCENE_MARKET);
+        _marketPanel.SetActive(true);
+        _mainMenu.SetActive(false);
     }
 
     public void QuitGame()

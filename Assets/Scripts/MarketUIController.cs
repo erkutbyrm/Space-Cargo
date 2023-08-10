@@ -11,7 +11,10 @@ public class MarketUIController : MonoBehaviour
     [SerializeField] GameObject _barPrefab;
     [SerializeField] private GameObject _barContainerSpeed;
     [SerializeField] private GameObject _barContainerHealth;
-    [SerializeField] private GameObject _textNotEnoughGems;
+    [SerializeField] private GameObject _textWarning;
+    [SerializeField] private GameObject _mainMenu;
+    [SerializeField] private GameObject _marketPanel;
+
 
     private float _textTime = 3f;
     private bool _isTextShowing = false;
@@ -24,6 +27,8 @@ public class MarketUIController : MonoBehaviour
     private int _currentSpeedUpgradePrice = 10;
     private int _currentHealthUpgradePrice = 5;
 
+    private const string TEXT_NOT_ENOUGH_GEMS = "You do not have enough gems to buy the upgrade!";
+    private const string TEXT_UPGRADE_FULL = "You have already maxed this upgrade!";
 
     private Dictionary<string, List<GameObject>> _barDictionary = new Dictionary<string, List<GameObject>>();
 
@@ -35,7 +40,7 @@ public class MarketUIController : MonoBehaviour
         Initialize();
         _barDictionary.Add(Constants.PLAYER_UPGRADE_SPEED, new List<GameObject>());
         _barDictionary.Add(Constants.PLAYER_UPGRADE_HEALTH, new List<GameObject>());
-        _textNotEnoughGems.SetActive(false);
+        _textWarning.SetActive(false);
         _isTextShowing = false;
         DrawGemCount();
         DrawSpeedUpgrade();
@@ -52,7 +57,7 @@ public class MarketUIController : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            SceneManager.LoadScene(Constants.SCENE_MAIN_MENU);
+            GoToMainMenu();
         }
     }
     public void DrawGemCount()
@@ -100,7 +105,6 @@ public class MarketUIController : MonoBehaviour
                 break;
             case Constants.PLAYER_UPGRADE_HEALTH:
                 _barContainer = _barContainerHealth;
-                Debug.Log("hel");
                 break;
             default:
                 _barContainer = _barContainerSpeed;
@@ -125,7 +129,6 @@ public class MarketUIController : MonoBehaviour
                 break;
             case Constants.PLAYER_UPGRADE_HEALTH:
                 currentFullBar = _currentHealthUpgrade;
-                Debug.Log("lo");
                 break;
             default:
                 currentFullBar = 0;
@@ -167,7 +170,14 @@ public class MarketUIController : MonoBehaviour
         {
             if(!_isTextShowing)
             {
-                StartCoroutine(NotEnoughGemsCoroutine());
+                if (_gemCount < _currentSpeedUpgradePrice)
+                {
+                    StartCoroutine(TextWarningCoroutine(TEXT_NOT_ENOUGH_GEMS));
+                }
+                else if (_currentSpeedUpgrade >= _totalSpeedUpgradeCount)
+                {
+                    StartCoroutine(TextWarningCoroutine(TEXT_UPGRADE_FULL));
+                }
             }
         }
     }
@@ -192,17 +202,31 @@ public class MarketUIController : MonoBehaviour
         {
             if (!_isTextShowing)
             {
-                StartCoroutine(NotEnoughGemsCoroutine());
+                if (_gemCount < _currentSpeedUpgradePrice)
+                {
+                    StartCoroutine(TextWarningCoroutine(TEXT_NOT_ENOUGH_GEMS));
+                }
+                else if (_currentSpeedUpgrade >= _totalSpeedUpgradeCount)
+                {
+                    StartCoroutine(TextWarningCoroutine(TEXT_UPGRADE_FULL));
+                }
             }
         }
     }
 
-    IEnumerator NotEnoughGemsCoroutine()
+    public void GoToMainMenu()
+    {
+        _mainMenu.SetActive(true);
+        _marketPanel.SetActive(false);
+    }
+
+    IEnumerator TextWarningCoroutine(string text)
     {
         _isTextShowing = true;
-        _textNotEnoughGems.SetActive(true);
+        _textWarning.GetComponent<TextMeshProUGUI>().text = text;
+        _textWarning.SetActive(true);
         yield return new WaitForSeconds(_textTime);
-        _textNotEnoughGems.SetActive(false);
+        _textWarning.SetActive(false);
         _isTextShowing = false;
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 public class LevelScriptableObject : ScriptableObject
 {
     public string LevelName;
+    public TextAsset LevelDescription;
     public int GemCount;
     public Color GemColour;
     public int AsteroidCount;

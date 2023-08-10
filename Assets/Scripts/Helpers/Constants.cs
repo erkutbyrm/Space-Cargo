@@ -20,8 +20,6 @@ public static class Constants
 
     public const string SCENE_MAIN_MENU = "MainMenuScene";
     public const string SCENE_GAME = "GameScene";
-    public const string SCENE_MAP_SELECT = "MapSelectionScene";
-    public const string SCENE_MARKET = "MarketScene";
 
     public const string PREFS_KEY_CURRENT_QUEST = "CurrentQuest";
     public const string PREFS_KEY_GEM_COUNT = "GemCount";
