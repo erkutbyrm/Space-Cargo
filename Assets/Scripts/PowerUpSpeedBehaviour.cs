@@ -11,6 +11,7 @@ public class PowerUpSpeedBehaviour : MonoBehaviour, ICollectable
     [SerializeField] private float _powerUpDuration = 5f;
     public void Collect()
     {
+        AudioManager.Instance.PlaySoundWithName("PowerUpSpeedSound");
         OnPowerUpSpeedCollected?.Invoke(_powerUpSpeed, _powerUpDuration);
         Destroy(gameObject);
     }

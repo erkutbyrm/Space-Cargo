@@ -28,6 +28,7 @@ public abstract class ShipBehaviour : MonoBehaviour
         CurrentHealth -= damage;
         if (CurrentHealth <= 0)
         {
+            AudioManager.Instance.PlaySoundWithName("ExplosionSound");
             Die();
         }
     }

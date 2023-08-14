@@ -1,3 +1,8 @@
-saturn information
+Saturn is the sixth planet from the Sun.
+It is the second largest planet in solar system.
 
-written here
+Saturn is a gas giant, meaning that it is mostly gas 
+and it doesn't have a solid surface.
+It's composed of mostly Hydrogene and Helium gases.
+
+Saturn has a characteristic ring that is composed of ice and rocks.

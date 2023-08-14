@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraBehaviour : MonoBehaviour
 {
     private Vector3 _cameraOffset = new Vector3(0,0,-10f);
-    [SerializeField] private GameObject _spaceShip;
+    private GameObject _spaceShip;
     private SpriteRenderer _backgroundImage;
     [SerializeField] private LevelController _levelController;
 
@@ -18,6 +18,12 @@ public class CameraBehaviour : MonoBehaviour
         _lerpValues.x = Mathf.Floor( _backgroundImage.bounds.max.x - Camera.main.ViewportToWorldPoint(new Vector2(1f, 0.5f) ).x );
         _lerpValues.y = Mathf.Floor( _backgroundImage.bounds.max.y - Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 1f) ).y );
     }
+
+    public void InitializeShip(GameObject ship)
+    {
+        _spaceShip = ship;
+    }
+
     void Update()
     {
        

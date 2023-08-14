@@ -4,19 +4,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class InformationUIController : MonoBehaviour
+public class InformationUIBehaviour : MonoBehaviour
 {
-    [SerializeField] private GameObject _mainMenu;
-    [SerializeField] private GameObject _mapInfoPanel;
     [SerializeField] private TextMeshProUGUI _worldName;
     [SerializeField] private TextMeshProUGUI _worldDescription;
+    [SerializeField] private MainMenuController _mainMenuController;
 
     [SerializeField] private List<LevelScriptableObject> _levels;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
 
     // Update is called once per frame
     void Update()
@@ -46,7 +41,6 @@ public class InformationUIController : MonoBehaviour
 
     public void GoToMainMenu()
     {
-        _mainMenu.SetActive(true);
-        _mapInfoPanel.SetActive(false);
+        _mainMenuController.OpenMenu(_mainMenuController.MainMenu.gameObject);
     }
 }

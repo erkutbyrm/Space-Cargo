@@ -27,6 +27,7 @@ public class SpawnController : MonoBehaviour
     
     public void Initialize(LevelScriptableObject currentLevel, out int totalSpawnedCargo)
     {
+        SpawnShip(DataController.Instance.PlayerData.CurrentShipID);
         totalSpawnedCargo = 0;
         InitializeFromLocal(currentLevel);
         while (_asteroidSpawnCount > 0 || _cargoSpawnCount > 0 || _gemSpawnCount > 0 || _enemySpawnCount > 0 || _speedBoostSpawnCount > 0)
@@ -64,6 +65,11 @@ public class SpawnController : MonoBehaviour
                 _speedBoostSpawnCount--;
             }
         }
+    }
+    public GameObject SpawnShip(int ID)
+    {
+        return Instantiate(DataController.Instance.PlayerData.CurrentShipData.SpaceShipScriptableObject.Prefab,
+            new Vector3(13, 6, 0), Quaternion.identity);
     }
 
     private void SpawnAsteroid()

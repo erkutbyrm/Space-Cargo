@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45f147d13bc6ac246b3a80470536504c, type: 3}
   m_Name: SpaceShip
   m_EditorClassIdentifier: 
+  ID: 13
   SpaceShipName: SpaceShip_1
-  Speed: 5
-  MaxHealth: 7
+  BaseSpeedLimit: 5
+  BaseHealth: 5
   LaserDamage: 1
-  SpaceShipSprite: {fileID: 21300000, guid: 3acb48f50e852e148a5831e8d072c5a9, type: 3}
+  MaxSpeedUpgrade: 4
+  MaxHealthUpgrade: 3
+  Price: 800
+  Prefab: {fileID: 8319358148133150233, guid: 41ab0339a442597498c696abb94bcae6, type: 3}

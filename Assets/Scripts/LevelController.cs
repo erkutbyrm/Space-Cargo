@@ -14,6 +14,7 @@ public class LevelController : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private GameObject _pauseMenu;
+    [SerializeField] private GameObject _settingsMenu;
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private GameObject _winScreenPanel;
     [SerializeField] private GameObject _floatingTextBox;
@@ -26,6 +27,7 @@ public class LevelController : MonoBehaviour
     public static bool IsPaused { get; protected set; }
     private bool _isWon;
     private bool _isTextShowing;
+    private bool _isSettingsShown;
 
     public Quest currentQuest { get; protected set; }
     public Vector2 mapLimits { get; protected set; }
@@ -47,8 +49,10 @@ public class LevelController : MonoBehaviour
         Time.timeScale = 1f;
         IsPaused = false;
         _isWon = false;
+        _isSettingsShown = false;
         _gameOverPanel.SetActive(false);
         _pauseMenu.SetActive(false);
+        _settingsMenu.SetActive(false);
         _winScreenPanel.SetActive(false);
 
         _gameUIController.UpdateCargoCounterText(
@@ -66,16 +70,26 @@ public class LevelController : MonoBehaviour
     {
         if (!_isWon && Input.GetKeyDown(KeyCode.Escape))
         {
-            if (IsPaused)
+            if (_isSettingsShown)
             {
-                ResumeGame();
+                HideSettings();
             }
             else
             {
-                PauseGame();
+                if (IsPaused)
+                {
+                    ResumeGame();
+                }
+                else
+                {
+                    PauseGame();
+                }
             }
+            
         }
     }
+
+
 
     //private Quest LoadQuestFromLocal()
     //{
@@ -134,9 +148,29 @@ public class LevelController : MonoBehaviour
         _gameOverPanel.SetActive(true);
     }
 
+    public void DisplaySettings()
+    {
+        _isSettingsShown = true;
+        _pauseMenu.SetActive(false);
+        _settingsMenu.SetActive(true);
+    }
+
+    public void HideSettings()
+    {
+        _isSettingsShown = false;
+        _pauseMenu.SetActive(true);
+        _settingsMenu.SetActive(false);
+    }
+
     public void GoToMainMenu()
     {
         SceneManager.LoadScene(Constants.SCENE_MAIN_MENU);
+    }
+
+    public void ShowSettingsMenu()
+    {
+        _settingsMenu.SetActive(true);
+        _pauseMenu.SetActive(false);
     }
 
     public void QuitGame()
@@ -152,7 +186,7 @@ public class LevelController : MonoBehaviour
             Time.timeScale = 0f;
             IsPaused = true;
             _winScreenPanel.SetActive(true);
-            PlayerPrefs.DeleteKey(Constants.PREFS_KEY_CURRENT_QUEST);
+            //PlayerPrefs.DeleteKey(Constants.PREFS_KEY_CURRENT_QUEST);
 
             DataController.Instance.PlayerData.GemCount += _collectableDataController.CollectedGemCount;
             DataController.Instance.WriteDataToPrefs<PlayerData>(DataController.Instance.PlayerData, Constants.PREFS_PLAYER_DATA);

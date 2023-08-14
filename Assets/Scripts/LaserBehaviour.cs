@@ -15,11 +15,14 @@ public class LaserBehaviour : MonoBehaviour, IPooledObject
     {
         _isReturned = false;
         _rigidBody.velocity = transform.right * BulletVelocity;
+        AudioManager.Instance.PlaySoundWithName("LaserShootSound");
     }
 
     public virtual void OnTriggerEnter2D(Collider2D collision)
     {
         GameObject hitExplosion = Instantiate(_laserHitExplosionPrefab, transform.position, transform.rotation);
+        AudioManager.Instance.PlaySoundWithName("LaserHitSound");
+
         Animator animator = hitExplosion.GetComponent<Animator>();
         float delay = animator.GetCurrentAnimatorStateInfo(0).length;
         Destroy(hitExplosion, delay);

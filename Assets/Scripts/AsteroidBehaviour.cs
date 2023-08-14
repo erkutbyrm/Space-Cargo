@@ -36,6 +36,7 @@ public class AsteroidBehaviour : MonoBehaviour
     public void ExplodeAsteroid()
     {
         GameObject explosion = GameObject.Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
+        AudioManager.Instance.PlaySoundWithName("ExplosionSound");
         Animator explosionAnimator = explosion.GetComponent<Animator>();
         float delay = explosionAnimator.GetCurrentAnimatorStateInfo(0).length;
         Destroy(explosion, delay);

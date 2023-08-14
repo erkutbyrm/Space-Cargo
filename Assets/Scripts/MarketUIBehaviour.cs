@@ -5,16 +5,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MarketUIController : MonoBehaviour
+public class MarketUIBehaviour : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI _gemsText;
     [SerializeField] GameObject _barPrefab;
     [SerializeField] private GameObject _barContainerSpeed;
     [SerializeField] private GameObject _barContainerHealth;
     [SerializeField] private GameObject _textWarning;
-    [SerializeField] private GameObject _mainMenu;
-    [SerializeField] private GameObject _marketPanel;
-
+    [SerializeField] private MainMenuController _mainMenuController;
 
     private float _textTime = 3f;
     private bool _isTextShowing = false;
@@ -49,15 +47,15 @@ public class MarketUIController : MonoBehaviour
 
     private void Initialize()
     {
-        _totalSpeedUpgradeCount = DataController.Instance.PlayerData.TotalSpeedUpgrade;
-        _totalHealthUpgradeCount = DataController.Instance.PlayerData.TotalHealthUpgrade;
+        _totalSpeedUpgradeCount = DataController.Instance.PlayerData.CurrentShipData.SpaceShipScriptableObject.MaxSpeedUpgrade;
+        _totalHealthUpgradeCount = DataController.Instance.PlayerData.CurrentShipData.SpaceShipScriptableObject.MaxHealthUpgrade;
     }
 
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            GoToMainMenu();
+            GoBackToShipMarket();
         }
     }
     public void DrawGemCount()
@@ -73,10 +71,10 @@ public class MarketUIController : MonoBehaviour
                 _gemCount = DataController.Instance.PlayerData.GemCount;
                 break;
             case Constants.PLAYER_UPGRADE_SPEED:
-                _currentSpeedUpgrade = DataController.Instance.PlayerData.Upgrades[Constants.PLAYER_UPGRADE_SPEED];
+                _currentSpeedUpgrade = DataController.Instance.PlayerData.CurrentShipData.CurrentSpeedUpgrade;
                 break;
             case Constants.PLAYER_UPGRADE_HEALTH:
-                _currentHealthUpgrade = DataController.Instance.PlayerData.Upgrades[Constants.PLAYER_UPGRADE_HEALTH];
+                _currentHealthUpgrade = DataController.Instance.PlayerData.CurrentShipData.CurrentHealthUpgrade;
                 break;
             default:
                 break;
@@ -158,7 +156,7 @@ public class MarketUIController : MonoBehaviour
             _currentSpeedUpgrade++;
             _gemCount -= _currentSpeedUpgradePrice;
 
-            DataController.Instance.PlayerData.Upgrades[Constants.PLAYER_UPGRADE_SPEED] = _currentSpeedUpgrade;
+            DataController.Instance.PlayerData.CurrentShipData.CurrentSpeedUpgrade = _currentSpeedUpgrade;
             DataController.Instance.PlayerData.GemCount = _gemCount;
 
             DataController.Instance.WriteDataToPrefs<PlayerData>(DataController.Instance.PlayerData, Constants.PREFS_PLAYER_DATA);
@@ -189,7 +187,7 @@ public class MarketUIController : MonoBehaviour
             _currentHealthUpgrade++;
             _gemCount -= _currentHealthUpgradePrice;
 
-            DataController.Instance.PlayerData.Upgrades[Constants.PLAYER_UPGRADE_HEALTH] = _currentHealthUpgrade;
+            DataController.Instance.PlayerData.CurrentShipData.CurrentHealthUpgrade = _currentHealthUpgrade;
             DataController.Instance.PlayerData.GemCount = _gemCount;
 
             DataController.Instance.WriteDataToPrefs<PlayerData>(DataController.Instance.PlayerData, Constants.PREFS_PLAYER_DATA);
@@ -214,10 +212,9 @@ public class MarketUIController : MonoBehaviour
         }
     }
 
-    public void GoToMainMenu()
+    public void GoBackToShipMarket()
     {
-        _mainMenu.SetActive(true);
-        _marketPanel.SetActive(false);
+        _mainMenuController.OpenMenu(_mainMenuController.ShipSelectionPanel.gameObject);
     }
 
     IEnumerator TextWarningCoroutine(string text)

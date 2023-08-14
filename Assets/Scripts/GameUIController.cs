@@ -22,7 +22,7 @@ public class GameUIController : MonoBehaviour
     private bool _isSpeedBoostActive = false;
     private float _speedBoostDuration = 0;
 
-    void Start()
+    public void StartGameUIController()
     {
         _playerShipBehaviour = GameObject.FindObjectOfType<PlayerShipBehaviour>();
         //UpdateCargoCounterText(CargoQuest.CollectedCargoCount, CargoQuest.TargetCargoCount);

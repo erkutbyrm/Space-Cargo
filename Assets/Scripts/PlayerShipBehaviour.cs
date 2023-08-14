@@ -15,7 +15,7 @@ public class PlayerShipBehaviour : ShipBehaviour
     [SerializeField] private float _accelPercentage = 2f;
     [SerializeField] private float _decelPercentage = 2f;
     [SerializeField] private Rigidbody2D _rigidBody;
-    [SerializeField] private Animator _animator;
+    [SerializeField] private List<Animator> _animators;
     private Vector2 _movement;
     private Vector3 mousePos;
     private float _remainingBoostInSeconds = 0;
@@ -30,13 +30,13 @@ public class PlayerShipBehaviour : ShipBehaviour
     public override int CollisionDamage { get; protected set; } = 1;
     private GameUIController _gameUIController;
 
-    [Header("Scriptable Objects")]
-    [SerializeField] List<SpaceShipScriptableObject> _shipTypes;
 
     public override void Start()
     {
         PlayerDataInitialization();
+        GameObject.FindObjectOfType<CameraBehaviour>().InitializeShip(this.gameObject);
         _gameUIController = GameObject.FindObjectOfType<GameUIController>();
+        _gameUIController.StartGameUIController();
         base.Start();
     }
 
@@ -67,7 +67,7 @@ public class PlayerShipBehaviour : ShipBehaviour
 
     private void ResetSavedData()
     {
-        PlayerPrefs.DeleteKey(Constants.PREFS_KEY_CURRENT_QUEST);
+        //PlayerPrefs.DeleteKey(Constants.PREFS_KEY_CURRENT_QUEST);
     }
 
     // MOVEMENT
@@ -94,14 +94,17 @@ public class PlayerShipBehaviour : ShipBehaviour
         Quaternion rotation = Quaternion.AngleAxis(angle, transform.forward);
         _rigidBody.SetRotation(Quaternion.Slerp(transform.rotation, rotation, _rotationSpeed * Time.fixedDeltaTime));
 
+        bool animBool = false;
         if (_movement.y > 0 && _currentSpeed < _maxSpeed)
         {
-            _animator.SetBool("IsThrustStarted", true);
+            animBool = true;
+            //_animator.SetBool("IsThrustStarted", true);
             _currentSpeed += _accelPercentage * Time.fixedDeltaTime;
         }
         else if (_movement.y < 0)
         {
-            _animator.SetBool("IsThrustStarted", false);
+            animBool = false;
+            //_animator.SetBool("IsThrustStarted", false);
             if (_currentSpeed > 0)
             {
                 _currentSpeed -= _decelPercentage * Time.fixedDeltaTime;
@@ -113,11 +116,17 @@ public class PlayerShipBehaviour : ShipBehaviour
         }
         else
         {
-            _animator.SetBool("IsThrustStarted", false);
+            animBool = false;
+            //_animator.SetBool("IsThrustStarted", false);
             if (_currentSpeed <= 0)
             {
                 _currentSpeed = 0;
             }
+        }
+
+        foreach ( Animator anim in _animators )
+        {
+            anim.SetBool("IsThrustStarted", animBool);
         }
 
         _rigidBody.MovePosition(_rigidBody.position + (Vector2)transform.right * _currentSpeed * Time.fixedDeltaTime);
@@ -180,13 +189,11 @@ public class PlayerShipBehaviour : ShipBehaviour
 
     private void PlayerDataInitialization()
     {
-        SpaceShipScriptableObject _currentShipType = _shipTypes.Find(
-            (ship) =>  ship.SpaceShipName == DataController.Instance.PlayerData.SpaceShipName
-            );
+        SpaceShipScriptableObject _currentShipType = DataController.Instance.PlayerData.CurrentShipData.SpaceShipScriptableObject;
 
         _laserPrefab.GetComponent<PlayerLaserBehaviour>().SetPlayerLaserDamage(_currentShipType.LaserDamage);
-        transform.GetComponent<SpriteRenderer>().sprite = _currentShipType.SpaceShipSprite;
-        _maxSpeed = _currentShipType.Speed + DataController.Instance.PlayerData.Upgrades[Constants.PLAYER_UPGRADE_SPEED];
-        MaxHealth = _currentShipType.MaxHealth + DataController.Instance.PlayerData.Upgrades[Constants.PLAYER_UPGRADE_HEALTH];
+        //transform.GetComponent<SpriteRenderer>().sprite = _currentShipType.SpaceShipSprite;
+        _maxSpeed = _currentShipType.BaseSpeedLimit + DataController.Instance.PlayerData.CurrentShipData.CurrentSpeedUpgrade;
+        MaxHealth = _currentShipType.BaseHealth + DataController.Instance.PlayerData.CurrentShipData.CurrentHealthUpgrade;
     }
 }

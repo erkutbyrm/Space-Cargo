@@ -1,24 +1,24 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerData
 {
-    public string LevelName;
-    public string SpaceShipName;
-    public int TotalSpeedUpgrade;
-    public int TotalHealthUpgrade;
+    public string LevelName; //TODO: take to route 
+    public int CurrentShipID;
+    [NonSerialized] public ShipCustomizationData CurrentShipData;
+    public List<ShipCustomizationData> ShipCustomizationDataList;
     public int GemCount;
-    public Dictionary<string, int> Upgrades;
 
-    public PlayerData(string levelName, string spaceShipName, int totalSpeedUpgrade = 5, int totalHealthUpggrade = 5, int gemCount = 0, Dictionary<string,int> upgradesDictionary = null)
+    public PlayerData() { }
+    public PlayerData(string levelName, List<ShipCustomizationData> shipDataList, int currentShipID = 0,
+        int gemCount = 0)
     {
         LevelName = levelName;
-        SpaceShipName = spaceShipName;
-        TotalSpeedUpgrade = totalSpeedUpgrade;
-        TotalHealthUpgrade = totalHealthUpggrade;
+        ShipCustomizationDataList = shipDataList;
+        CurrentShipID = currentShipID;
         GemCount = gemCount;
-
-        Upgrades = upgradesDictionary ?? new Dictionary<string, int>();
+        CurrentShipData = ShipCustomizationDataList.Find( (ship) => ship.ID == currentShipID );
     }
 }
