@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class CargoQuest : Quest
 {
@@ -26,7 +23,6 @@ public class CargoQuest : Quest
         IsCompleted = (CollectedCargoCount >= TargetCargoCount);
         return IsCompleted;
     }
-
 
     private void OnCargoCollected()
     {

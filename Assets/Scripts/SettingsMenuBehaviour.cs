@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -13,7 +11,7 @@ public class SettingsMenuBehaviour : MonoBehaviour
 
     private void OnEnable()
     {
-        _audioMixer.GetFloat("MasterVolume", out float volume);
+        _audioMixer.GetFloat(Constants.MASTER_VOLUME, out float volume);
         _slider.value = volume;
         _toggle.enabled = Screen.fullScreen;
 
@@ -28,7 +26,7 @@ public class SettingsMenuBehaviour : MonoBehaviour
 
     public void SetMasterVolume(float value)
     {
-        _audioMixer.SetFloat("MasterVolume", value);
+        _audioMixer.SetFloat(Constants.MASTER_VOLUME, value);
     }
 
     public void SetFullscreenValue(bool value)

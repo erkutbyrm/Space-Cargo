@@ -1,5 +1,3 @@
-using System.Collections;
-using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
@@ -42,13 +40,13 @@ public class MapSelectionUIBehaviour : MonoBehaviour
         switch (name)
         {
             case "Earth":
-                _background.sprite = _levelList[0].BackgroundSprite;
+                _background.sprite = GetLevelWithName("Earth").BackgroundSprite;
                 break;
             case "Saturn": 
-                _background.sprite = _levelList[1].BackgroundSprite;
+                _background.sprite = GetLevelWithName("Saturn").BackgroundSprite;
                 break;
             default: 
-                _background.sprite = _levelList[0].BackgroundSprite;
+                _background.sprite = GetLevelWithName("Earth").BackgroundSprite;
                 break;
         }
     }
@@ -72,5 +70,9 @@ public class MapSelectionUIBehaviour : MonoBehaviour
         }
     }
 
+    private LevelScriptableObject GetLevelWithName(string name)
+    {
+        return _levelList.Find(level => level.LevelName == name);
+    }
 
 }

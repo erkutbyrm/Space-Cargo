@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public static class Constants 
 {
     public const string TAG_SPACESHIP = "SpaceShip";
@@ -23,14 +19,17 @@ public static class Constants
 
     public const string PREFS_PLAYER_DATA = "PlayerData";
 
-
     public const string PLAYER_UPGRADE_SPEED = "PlayerSpeedUpgrade";
     public const string PLAYER_UPGRADE_HEALTH = "PlayerHealthUpgrade";
 
     public const string LEVEL_NAME_EARTH = "Earth";
     public const string LEVEL_NAME_SATURN = "Saturn";
 
-
-
-
+    public const string SOUND_PICKUP_GEM = "PickupGemSound";
+    public const string SOUND_PICKUP_CARGO = "PickupCargoSound";
+    public const string SOUND_LASER_SHOOT = "LaserShootSound";
+    public const string SOUND_LASER_HIT = "LaserHitSound";
+    public const string SOUND_POWERUP_SPEED = "PowerUpSpeedSound";
+    public const string SOUND_EXPLOSION = "ExplosionSound";
+    public const string MASTER_VOLUME = "MasterVolume";
 }

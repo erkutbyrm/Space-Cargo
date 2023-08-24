@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyShipBehaviour : ShipBehaviour
@@ -7,44 +6,35 @@ public class EnemyShipBehaviour : ShipBehaviour
     public override int MaxHealth { get; protected set; } = 3;
     public override int CollisionDamage { get; protected set; } = 1;
 
-    [SerializeField] private int _triggerLength = 9;
-    private CapsuleCollider2D _capsuleCollider;
-    private Rigidbody2D _rigidBody;
     private EnemyAI _enemyAI;
-    private float _distanceFromShip;
-
-    [SerializeField] private GameObject _laserPrefab;
-    [SerializeField] private GameObject _gemPrefab;
-    [SerializeField] private Transform _laserStartPoint;
-
     private GameObject _targetSpaceShip;
-
-    //private Coroutine _aiCoroutine;
+    [SerializeField] private int _triggerLength = 9;
+    private float _distanceFromShip;
     private Coroutine _aiMoveCoroutine;
     private Coroutine _shootRepeatedly;
 
     private bool _isAICoroutinesStarted;
 
+    private Rigidbody2D _rigidBody;
+    [SerializeField] private GameObject _laserPrefab;
+    [SerializeField] private GameObject _gemPrefab;
+    [SerializeField] private Transform _laserStartPoint;
 
-    // Start is called before the first frame update
     public override void Start()
     {
         CurrentHealth = MaxHealth;
         _targetSpaceShip = GameObject.FindGameObjectWithTag(Constants.TAG_SPACESHIP);
         _distanceFromShip = 0;
         _isAICoroutinesStarted = false;
-        _capsuleCollider = GetComponent<CapsuleCollider2D>();
         _rigidBody = GetComponent<Rigidbody2D>();
         _enemyAI = GetComponent<EnemyAI>();
         _enemyAI.Initialize(_rigidBody, _targetSpaceShip);
     }
     
-    // Update is called once per frame
     void Update()
     {
         //TODO: when spawns near spaceship, doesnt follow and continue to shoot. Solved mysteriously
-
-        //TODO: Too laggy even with 2 ships Solved with scan after asteroid die
+        //TODO: Too laggy even with 2 ships Solved with scan after asteroid die. solved by scanning when asteroid dies
         if (_targetSpaceShip == null)
         {
             return;
@@ -56,7 +46,6 @@ public class EnemyShipBehaviour : ShipBehaviour
             if ( !_isAICoroutinesStarted )
             {
                 _enemyAI.UpdatePath();
-                //_aiCoroutine = StartCoroutine("AICoroutine");
                 _aiMoveCoroutine = StartCoroutine( AIMoveCoroutine() );
                 _shootRepeatedly = StartCoroutine( ShootRepeatedly() );
                 _isAICoroutinesStarted = true;
@@ -66,13 +55,10 @@ public class EnemyShipBehaviour : ShipBehaviour
         {
             if( _isAICoroutinesStarted )
             {
-                //StopCoroutine(_aiCoroutine);
                 StopCoroutine(_aiMoveCoroutine);
                 StopCoroutine(_shootRepeatedly);
-                //_aiCoroutine = null;
                 _isAICoroutinesStarted = false;
             }
-            
         }
     }
 

@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,6 +6,8 @@ using UnityEngine.UI;
 public class ShipCardBehaviour : MonoBehaviour
 {
     public static event Action<string> WarningTextShipCard;
+    public static event Action OnShipSelected;
+    public static event Action OnShipBought;
     private int _shipID;
     [SerializeField] private TextMeshProUGUI _shipName;
     [SerializeField] private Image _shipImage;
@@ -36,15 +36,15 @@ public class ShipCardBehaviour : MonoBehaviour
         ShipCustomizationData shipToSelect = DataController.Instance.PlayerData.ShipCustomizationDataList.Find(ship => ship.ID == _shipID);
         if (shipToSelect != null)
         {
-            DataController.Instance.PlayerData.CurrentShipData = 
-                DataController.Instance.PlayerData.ShipCustomizationDataList.Find(ship => ship.ID == _shipID);
+            DataController.Instance.PlayerData.CurrentShipData = shipToSelect;
             DataController.Instance.PlayerData.CurrentShipID = _shipID;
+            
             string message = "Ship: \""+ shipToSelect.SpaceShipScriptableObject.SpaceShipName +"\" selected succesfully";
             WarningTextShipCard?.Invoke(message);
+            OnShipSelected?.Invoke();
         }
         else
         {
-            //TODO: show error message
             string message = "You need to buy the ship first";
             WarningTextShipCard?.Invoke(message);
         }
@@ -52,7 +52,6 @@ public class ShipCardBehaviour : MonoBehaviour
 
     public void BuyShip()
     {
-        //TODO: check gems
         string message;
         SpaceShipScriptableObject shipToBuy = ShipCatalog.Instance.GetShipByID(_shipID);
         if (DataController.Instance.PlayerData.GemCount < shipToBuy.Price)
@@ -71,7 +70,9 @@ public class ShipCardBehaviour : MonoBehaviour
         });
         DataController.Instance.WriteDataToPrefs<PlayerData>(DataController.Instance.PlayerData, Constants.PREFS_PLAYER_DATA);
         _buttonBuy.SetActive(false);
+        
         message = $"Successfully bought ship: \"{shipToBuy.SpaceShipName}\"";
         WarningTextShipCard?.Invoke(message);
+        OnShipBought?.Invoke();
     }
 }

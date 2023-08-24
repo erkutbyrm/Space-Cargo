@@ -25,7 +25,6 @@ public class GameUIController : MonoBehaviour
     public void StartGameUIController()
     {
         _playerShipBehaviour = GameObject.FindObjectOfType<PlayerShipBehaviour>();
-        //UpdateCargoCounterText(CargoQuest.CollectedCargoCount, CargoQuest.TargetCargoCount);
 
         for (int i = 0; i < _playerShipBehaviour.MaxHealth; i++)
         {
@@ -38,7 +37,6 @@ public class GameUIController : MonoBehaviour
     {
         CollectableDataController.OnGemCountIncrease += UpdateGemCounterText;
         CargoQuest.OnCargoIncreased += UpdateCargoCounterText;
-
         PlayerShipBehaviour.OnSpeedBoost += UpdateSpeedPowerUp;
     }
 
@@ -46,7 +44,6 @@ public class GameUIController : MonoBehaviour
     {
         CollectableDataController.OnGemCountIncrease -= UpdateGemCounterText;
         CargoQuest.OnCargoIncreased -= UpdateCargoCounterText;
-
         PlayerShipBehaviour.OnSpeedBoost -= UpdateSpeedPowerUp;
     }
 

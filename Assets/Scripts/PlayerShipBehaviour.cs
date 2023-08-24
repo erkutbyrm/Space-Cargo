@@ -7,7 +7,6 @@ public class PlayerShipBehaviour : ShipBehaviour
 {
     public static event Action<float> OnSpeedBoost;
 
-
     [Header("Movement")]
     [SerializeField] private float _rotationSpeed = 5f;
     [SerializeField] private float _currentSpeed = 0f;
@@ -30,11 +29,10 @@ public class PlayerShipBehaviour : ShipBehaviour
     public override int CollisionDamage { get; protected set; } = 1;
     private GameUIController _gameUIController;
 
-
     public override void Start()
     {
         PlayerDataInitialization();
-        GameObject.FindObjectOfType<CameraBehaviour>().InitializeShip(this.gameObject);
+        GameObject.FindObjectOfType<CameraBehaviour>().IntroduceShipToCamera(this.gameObject);
         _gameUIController = GameObject.FindObjectOfType<GameUIController>();
         _gameUIController.StartGameUIController();
         base.Start();
@@ -59,15 +57,9 @@ public class PlayerShipBehaviour : ShipBehaviour
 
     public override void Die()
     {
-        ResetSavedData();
         LevelController levelController = GameObject.FindObjectOfType<LevelController>();
         levelController.DisplayEndGame();
         base.Die();
-    }
-
-    private void ResetSavedData()
-    {
-        //PlayerPrefs.DeleteKey(Constants.PREFS_KEY_CURRENT_QUEST);
     }
 
     // MOVEMENT
@@ -98,13 +90,11 @@ public class PlayerShipBehaviour : ShipBehaviour
         if (_movement.y > 0 && _currentSpeed < _maxSpeed)
         {
             animBool = true;
-            //_animator.SetBool("IsThrustStarted", true);
             _currentSpeed += _accelPercentage * Time.fixedDeltaTime;
         }
         else if (_movement.y < 0)
         {
             animBool = false;
-            //_animator.SetBool("IsThrustStarted", false);
             if (_currentSpeed > 0)
             {
                 _currentSpeed -= _decelPercentage * Time.fixedDeltaTime;
@@ -117,7 +107,6 @@ public class PlayerShipBehaviour : ShipBehaviour
         else
         {
             animBool = false;
-            //_animator.SetBool("IsThrustStarted", false);
             if (_currentSpeed <= 0)
             {
                 _currentSpeed = 0;
@@ -192,7 +181,6 @@ public class PlayerShipBehaviour : ShipBehaviour
         SpaceShipScriptableObject _currentShipType = DataController.Instance.PlayerData.CurrentShipData.SpaceShipScriptableObject;
 
         _laserPrefab.GetComponent<PlayerLaserBehaviour>().SetPlayerLaserDamage(_currentShipType.LaserDamage);
-        //transform.GetComponent<SpriteRenderer>().sprite = _currentShipType.SpaceShipSprite;
         _maxSpeed = _currentShipType.BaseSpeedLimit + DataController.Instance.PlayerData.CurrentShipData.CurrentSpeedUpgrade;
         MaxHealth = _currentShipType.BaseHealth + DataController.Instance.PlayerData.CurrentShipData.CurrentHealthUpgrade;
     }

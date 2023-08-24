@@ -1,10 +1,10 @@
 using Newtonsoft.Json;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DataController
 {
+    //TODO: mention singleton
     private static DataController _instance;
     public static DataController Instance
     {
@@ -31,7 +31,6 @@ public class DataController
 
     public void Initialize()
     {
-        //Debug.Log("prefs:"+PlayerPrefs.GetString(Constants.PREFS_PLAYER_DATA));
         PlayerData = GetDataFromPrefs<PlayerData>(Constants.PREFS_PLAYER_DATA);
         if( PlayerData == null )
         {
@@ -42,9 +41,6 @@ public class DataController
         {
             for(int j = 0; j < ShipCatalog.Instance.ShipDataList.Count; j++ )
             {
-                //Debug.Log("sc: "+PlayerData.ShipCustomizationDataList[i].ID);
-                //Debug.Log("sd: "+ShipCatalog.Instance.ShipDataList[j].ID);
-                Debug.Log(ShipCatalog.Instance.ShipDataList[j].SpaceShipName);
                 if (PlayerData.ShipCustomizationDataList[i].ID == ShipCatalog.Instance.ShipDataList[j].ID)
                 {
                     PlayerData.ShipCustomizationDataList[i].SpaceShipScriptableObject = ShipCatalog.Instance.ShipDataList[j];
@@ -53,15 +49,13 @@ public class DataController
         }
         //TODO: solved by adding this line!!
         PlayerData.CurrentShipData = PlayerData.ShipCustomizationDataList.Find( ship => ship.ID == PlayerData.CurrentShipID);
-
-        Debug.Log("playerdata:" + (PlayerData!=null) );
     }
 
     private PlayerData GenerateDummyData()
     {
         List<ShipCustomizationData> shipCustomizationDataList = new List<ShipCustomizationData>();
         SpaceShipScriptableObject defaultShip = ShipCatalog.Instance.DefaultShip;
-        //TODO: constructorless initialization
+        //TODO: mention constructorless initialization
 
         shipCustomizationDataList.Add(new ShipCustomizationData()
         {
@@ -82,7 +76,6 @@ public class DataController
 
     public T GetDataFromPrefs<T>(string key)
     {
-        Debug.Log("get: "+PlayerPrefs.GetString(key));
         string jsonString = PlayerPrefs.GetString(key, string.Empty);
         T playerData = JsonConvert.DeserializeObject<T>(jsonString, settings: new JsonSerializerSettings
         {
@@ -94,12 +87,10 @@ public class DataController
 
     public void WriteDataToPrefs<T>(T data, string key)
     {
-
         string jsonString = JsonConvert.SerializeObject(data, settings: new JsonSerializerSettings
         {
             TypeNameHandling = TypeNameHandling.All,
         });
-        Debug.Log("set: " + jsonString);
 
         PlayerPrefs.SetString(key, jsonString);
     }

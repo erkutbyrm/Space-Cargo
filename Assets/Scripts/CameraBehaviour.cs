@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraBehaviour : MonoBehaviour
@@ -19,7 +17,7 @@ public class CameraBehaviour : MonoBehaviour
         _lerpValues.y = Mathf.Floor( _backgroundImage.bounds.max.y - Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 1f) ).y );
     }
 
-    public void InitializeShip(GameObject ship)
+    public void IntroduceShipToCamera(GameObject ship)
     {
         _spaceShip = ship;
     }

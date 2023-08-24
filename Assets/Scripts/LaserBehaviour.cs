@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LaserBehaviour : MonoBehaviour, IPooledObject
@@ -10,18 +8,17 @@ public class LaserBehaviour : MonoBehaviour, IPooledObject
     public virtual int LaserDamage { get; set; } = 1;
     private bool _isReturned = false;
    
-
     public void OnSpawnFromPool()
     {
         _isReturned = false;
         _rigidBody.velocity = transform.right * BulletVelocity;
-        AudioManager.Instance.PlaySoundWithName("LaserShootSound");
+        AudioManager.Instance.PlaySoundWithName(Constants.SOUND_LASER_SHOOT);
     }
 
     public virtual void OnTriggerEnter2D(Collider2D collision)
     {
         GameObject hitExplosion = Instantiate(_laserHitExplosionPrefab, transform.position, transform.rotation);
-        AudioManager.Instance.PlaySoundWithName("LaserHitSound");
+        AudioManager.Instance.PlaySoundWithName(Constants.SOUND_LASER_HIT);
 
         Animator animator = hitExplosion.GetComponent<Animator>();
         float delay = animator.GetCurrentAnimatorStateInfo(0).length;

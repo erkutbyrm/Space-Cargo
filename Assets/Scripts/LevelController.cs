@@ -1,17 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Newtonsoft.Json;
 using UnityEngine.SceneManagement;
 using TMPro;
 
 public class LevelController : MonoBehaviour
 {
+    [SerializeField] private GameObject _levelBackground;
     [SerializeField] private List<LevelScriptableObject> _levelTypes;
     private LevelScriptableObject _currentLevel;
-    [SerializeField] private GameObject _bg;
-    
 
+    //TODO: move to menu controller
     [Header("UI")]
     [SerializeField] private GameObject _pauseMenu;
     [SerializeField] private GameObject _settingsMenu;
@@ -19,7 +18,6 @@ public class LevelController : MonoBehaviour
     [SerializeField] private GameObject _winScreenPanel;
     [SerializeField] private GameObject _floatingTextBox;
     [SerializeField] private GameUIController _gameUIController;
-    
     
     [SerializeField] private CollectableDataController _collectableDataController;
     [SerializeField] private SpawnController _spawnController;
@@ -36,20 +34,15 @@ public class LevelController : MonoBehaviour
     {
         InitializeLevelSettings();
         _spawnController.Initialize(_currentLevel, out int spawnedCargoCount);
-        //currentQuest = LoadQuestFromLocal();
         _isTextShowing = false;
         currentQuest = GenerateCargoQuest(spawnedCargoCount);
 
-        //if (currentQuest == null)
-        //{
-        //    currentQuest = GenerateCargoQuest(spawnedCargoCount);
-        //    Debug.Log("generated");
-        //    SaveQuestToLocal(currentQuest);
-        //}
         Time.timeScale = 1f;
+        
         IsPaused = false;
         _isWon = false;
         _isSettingsShown = false;
+        
         _gameOverPanel.SetActive(false);
         _pauseMenu.SetActive(false);
         _settingsMenu.SetActive(false);
@@ -59,12 +52,11 @@ public class LevelController : MonoBehaviour
             ((CargoQuest)currentQuest).CollectedCargoCount,
             ((CargoQuest)currentQuest).TargetCargoCount
             );
+        
         string cargoQuestText = "You need to collect " + ((CargoQuest)currentQuest).TargetCargoCount +
             " cargos and return them back to SpaceStation";
         StartCoroutine(ShowFloatingText(cargoQuestText, 5));
-
     }
-
     
     void Update()
     {
@@ -85,41 +77,12 @@ public class LevelController : MonoBehaviour
                     PauseGame();
                 }
             }
-            
         }
     }
-
-
-
-    //private Quest LoadQuestFromLocal()
-    //{
-    //    string jsonString = PlayerPrefs.GetString(Constants.PREFS_KEY_CURRENT_QUEST, string.Empty);
-    //    return JsonConvert.DeserializeObject<Quest>(jsonString, settings: new JsonSerializerSettings
-    //    {
-    //        TypeNameHandling = TypeNameHandling.All,
-    //    });
-    //}
-
-    //private void SaveQuestToLocal(Quest quest)
-    //{
-    //    string jsonString = JsonConvert.SerializeObject(quest, settings: new JsonSerializerSettings()
-    //    {
-    //        TypeNameHandling = TypeNameHandling.All,
-    //    });
-    //    PlayerPrefs.SetString(Constants.PREFS_KEY_CURRENT_QUEST, jsonString);
-    //}
 
     private Quest GenerateCargoQuest(int spawnedCargoCount)
     {
         return new CargoQuest(spawnedCargoCount);
-    }
-
-    private void OnDestroy()
-    {
-        //if (PlayerPrefs.HasKey(Constants.PREFS_KEY_CURRENT_QUEST))
-        //{
-        //    SaveQuestToLocal(currentQuest);
-        //}
     }
 
     public void PauseGame()
@@ -182,11 +145,10 @@ public class LevelController : MonoBehaviour
     {
         if (currentQuest.CheckCompleted())
         {
-            _isWon = true;
             Time.timeScale = 0f;
+            _isWon = true;
             IsPaused = true;
             _winScreenPanel.SetActive(true);
-            //PlayerPrefs.DeleteKey(Constants.PREFS_KEY_CURRENT_QUEST);
 
             DataController.Instance.PlayerData.GemCount += _collectableDataController.CollectedGemCount;
             DataController.Instance.WriteDataToPrefs<PlayerData>(DataController.Instance.PlayerData, Constants.PREFS_PLAYER_DATA);
@@ -214,7 +176,7 @@ public class LevelController : MonoBehaviour
     private void InitializeLevelSettings()
     {
         _currentLevel = _levelTypes.Find((level) => level.LevelName == DataController.Instance.PlayerData.LevelName);
-        _bg.transform.GetComponent<SpriteRenderer>().sprite = _currentLevel.BackgroundSprite;
+        _levelBackground.transform.GetComponent<SpriteRenderer>().sprite = _currentLevel.BackgroundSprite;
 
         mapLimits = _currentLevel.MapLimits;
         //TODO: set map limits, then call spawn controller

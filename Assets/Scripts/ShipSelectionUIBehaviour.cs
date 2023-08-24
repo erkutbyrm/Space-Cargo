@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -7,13 +6,13 @@ public class ShipSelectionUIBehaviour : MonoBehaviour
 {
     [SerializeField] private GameObject _shipCardContainer;
     [SerializeField] private GameObject _shipCardPrefab;
+    [SerializeField] private MarketUIBehaviour _marketUIBehaviour;
     [SerializeField] private MainMenuController _mainMenuController;
     [SerializeField] private TextMeshProUGUI _textWarning;
     [SerializeField] private TextMeshProUGUI _gemsText;
 
     private bool _isTextShowing = false;
     private float _textTime = 1f;
-    // Start is called before the first frame update
     void Start()
     {
         _isTextShowing = false;
@@ -28,12 +27,23 @@ public class ShipSelectionUIBehaviour : MonoBehaviour
 
     private void OnEnable()
     {
+        DrawGemCount();
         ShipCardBehaviour.WarningTextShipCard += ShowWarningText;
+        ShipCardBehaviour.OnShipBought += DrawGemCount;
+        ShipCardBehaviour.OnShipSelected += OnShipSelected;
+
     }
 
     private void OnDisable()
     {
         ShipCardBehaviour.WarningTextShipCard -= ShowWarningText;
+        ShipCardBehaviour.OnShipBought -= DrawGemCount;
+        ShipCardBehaviour.OnShipSelected -= OnShipSelected;
+    }
+
+    private void OnShipSelected()
+    {
+        _marketUIBehaviour.Initialize();
     }
 
     private void Update()

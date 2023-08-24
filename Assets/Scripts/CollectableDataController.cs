@@ -1,35 +1,26 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CollectableDataController : MonoBehaviour
 {
     public static event Action<int> OnGemCountIncrease;
-    //public static event Action<int> OnCargoCountIncrease;
-    //public int CollectedCargoCount = 0;
 
     public Dictionary<string, int> CollectableCountDictionary;
     public int CollectedGemCount = 0;
-    // Start is called before the first frame update
     void Start()
     {
-        //TODO: GameObject ship = PlayerPrefs.GetString("ship");
-        //playerprefs dictionary
-        //CollectedCargoCount = 0;
         CollectedGemCount = 0;
     }
 
     private void OnEnable()
     {
         GemBehaviour.OnGemCollected += IncreaseGemCount;
-        //CargoBehaviour.OnCargoCollected += IncreaseCargoCount;
     }
 
     private void OnDisable()
     {
         GemBehaviour.OnGemCollected -= IncreaseGemCount;
-        //CargoBehaviour.OnCargoCollected -= IncreaseCargoCount;
     }
 
     public void IncreaseGemCount()
@@ -37,11 +28,4 @@ public class CollectableDataController : MonoBehaviour
         CollectedGemCount++;
         OnGemCountIncrease?.Invoke(CollectedGemCount);
     }
-
-    //public void IncreaseCargoCount()
-    //{
-    //    CollectedCargoCount++;
-    //    OnCargoCountIncrease?.Invoke(CollectedCargoCount);
-    //}
-
 }

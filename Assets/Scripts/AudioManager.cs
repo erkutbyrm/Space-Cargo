@@ -1,18 +1,16 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
-    public AudioMixerGroup mixerGroup;
-
     public static AudioManager Instance;
-
-    public List<Sound> Sounds;
-    // Start is called before the first frame update
+    
+    [SerializeField] private AudioMixerGroup mixerGroup;
+    [SerializeField] private List<Sound> Sounds;
     void Awake()
     {
+        //TODO: mention singleton
         if(Instance == null)
         {
             Instance = this;

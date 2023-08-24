@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MainMenuController : MonoBehaviour
@@ -10,7 +8,6 @@ public class MainMenuController : MonoBehaviour
     [field: SerializeField] public MarketUIBehaviour MarketPanel {get; private set; }
     [field: SerializeField] public InformationUIBehaviour MapInfoPanel {get; private set; }
     [field: SerializeField] public ShipSelectionUIBehaviour ShipSelectionPanel {get; private set; }
-
 
     public void OpenMenu(GameObject targetMenu)
     {

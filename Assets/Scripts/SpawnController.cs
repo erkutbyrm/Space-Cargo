@@ -1,29 +1,24 @@
-using Newtonsoft.Json;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnController : MonoBehaviour
 {
     private Color _gemColor;
-    //TODO:
 
     [SerializeField] private GameObject[] _asteroidPrefabs;
     [SerializeField] private GameObject _gemPrefab;
     [SerializeField] private GameObject _cargoPrefab;
     [SerializeField] private GameObject _enemyPrefab;
     [SerializeField] private GameObject _speedBoostPrefab;
+    [SerializeField] private LevelController _levelController;
 
     private int _asteroidSpawnCount = 0;
     private int _gemSpawnCount = 0;
     private int _cargoSpawnCount = 0;
     private int _enemySpawnCount = 0;
     private int _speedBoostSpawnCount = 0;
-
     [SerializeField] private float _spawnSpaceInterval;
-    private readonly Vector2 NOT_FOUND_VECTOR2 = new Vector2(-99f,-99f);
 
-    [SerializeField] private LevelController _levelController;
+    private readonly Vector2 NOT_FOUND_VECTOR2 = new Vector2(-99f,-99f);
     
     public void Initialize(LevelScriptableObject currentLevel, out int totalSpawnedCargo)
     {

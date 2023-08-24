@@ -1,9 +1,7 @@
-using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MarketUIBehaviour : MonoBehaviour
 {
@@ -36,6 +34,14 @@ public class MarketUIBehaviour : MonoBehaviour
     void Start()
     {
         Initialize();
+        
+    }
+
+    public void Initialize()
+    {
+        _totalSpeedUpgradeCount = DataController.Instance.PlayerData.CurrentShipData.SpaceShipScriptableObject.MaxSpeedUpgrade;
+        _totalHealthUpgradeCount = DataController.Instance.PlayerData.CurrentShipData.SpaceShipScriptableObject.MaxHealthUpgrade;
+        _barDictionary.Clear();
         _barDictionary.Add(Constants.PLAYER_UPGRADE_SPEED, new List<GameObject>());
         _barDictionary.Add(Constants.PLAYER_UPGRADE_HEALTH, new List<GameObject>());
         _textWarning.SetActive(false);
@@ -43,12 +49,6 @@ public class MarketUIBehaviour : MonoBehaviour
         DrawGemCount();
         DrawSpeedUpgrade();
         DrawHealthUpgrade();
-    }
-
-    private void Initialize()
-    {
-        _totalSpeedUpgradeCount = DataController.Instance.PlayerData.CurrentShipData.SpaceShipScriptableObject.MaxSpeedUpgrade;
-        _totalHealthUpgradeCount = DataController.Instance.PlayerData.CurrentShipData.SpaceShipScriptableObject.MaxHealthUpgrade;
     }
 
     private void Update()
@@ -108,12 +108,18 @@ public class MarketUIBehaviour : MonoBehaviour
                 _barContainer = _barContainerSpeed;
                 break;
         }
+        ClearChildren(_barContainer);
         for (int i = 0; i < count; i++)
         {
             GameObject newBar = Instantiate(_barPrefab, _barContainer.transform);
             newBar.transform.localScale = new Vector3(2,2,1);
             _barDictionary[upgradeName].Add(newBar);
         }
+    }
+
+    private void ClearChildren(GameObject container)
+    {
+        container.transform.ClearChildren();
     }
 
     public void UpdateBars(string upgradeName)

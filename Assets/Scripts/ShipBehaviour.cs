@@ -1,6 +1,3 @@
-using Newtonsoft.Json;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class ShipBehaviour : MonoBehaviour
@@ -28,7 +25,7 @@ public abstract class ShipBehaviour : MonoBehaviour
         CurrentHealth -= damage;
         if (CurrentHealth <= 0)
         {
-            AudioManager.Instance.PlaySoundWithName("ExplosionSound");
+            AudioManager.Instance.PlaySoundWithName(Constants.SOUND_EXPLOSION);
             Die();
         }
     }

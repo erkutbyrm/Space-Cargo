@@ -15,7 +15,7 @@ MonoBehaviour:
   LevelName: Saturn
   LevelDescription: {fileID: 4900000, guid: 573b73856dd85fc48b62ac1aca951782, type: 3}
   GemCount: 10
-  GemColour: {r: 0.5, g: 0.29846734, b: 0, a: 1}
+  GemColour: {r: 1, g: 0.68726414, b: 0.23018867, a: 1}
   AsteroidCount: 200
   EnemyCount: 5
   CargoCount: 12

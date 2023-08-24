@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PowerUpSpeedBehaviour : MonoBehaviour, ICollectable
@@ -11,7 +9,7 @@ public class PowerUpSpeedBehaviour : MonoBehaviour, ICollectable
     [SerializeField] private float _powerUpDuration = 5f;
     public void Collect()
     {
-        AudioManager.Instance.PlaySoundWithName("PowerUpSpeedSound");
+        AudioManager.Instance.PlaySoundWithName(Constants.SOUND_POWERUP_SPEED);
         OnPowerUpSpeedCollected?.Invoke(_powerUpSpeed, _powerUpDuration);
         Destroy(gameObject);
     }
